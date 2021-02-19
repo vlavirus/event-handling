@@ -1,0 +1,23 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <h2>Login into app</h2>
+
+  <div *ngIf="auth.error$ | async as error">
+    {{error}}
+  </div>
+
+  <div class="">
+    <label>email</label>
+    <input type="mail" formControlName="email">
+<!--    <div *ngIf="form.get('email').touched && form.get('email').invalid">-->
+<!--      <small></small>-->
+<!--    </div>-->
+  </div>
+  <div>
+    <label>pass</label>
+    <input type="password" formControlName="password">
+<!--    <div *ngIf="form.get('password').touched && form.get('password').invalid">-->
+<!--      <small></small>-->
+<!--    </div>-->
+  </div>
+  <button [disabled]="form.invalid">submit</button>
+</form>
