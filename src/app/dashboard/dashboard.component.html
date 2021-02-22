@@ -1,1 +1,12 @@
-<p>dashboard works!</p>
+<app-dashboard-header></app-dashboard-header>
+<div class="calendar-wrapper">
+  <div>
+    <button (click)="toggleShow()">Create</button>
+    <app-dashboard-calendar></app-dashboard-calendar>
+  </div>
+  <div *ngIf="isShown">
+    <app-event-creator></app-event-creator>
+  </div>
+  <app-dashboard-scheduler></app-dashboard-scheduler>
+</div>
+
