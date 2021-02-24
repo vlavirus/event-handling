@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../shared/models/user';
 import { AuthService } from '../shared/services/auth.service';
 import { Router } from '@angular/router';
+import { EventService } from '../shared/services/event.service';
 
 @Component({
   selector: 'app-auth',
@@ -18,6 +19,7 @@ export class AuthComponent implements OnInit {
 
   constructor(
     public auth: AuthService,
+    public event: EventService,
     private router: Router
   ) { }
 
@@ -38,5 +40,8 @@ export class AuthComponent implements OnInit {
       this.form.reset();
       this.router.navigate([`/dashboard`]);
     });
+    // this.event.create(user).subscribe(() => {
+    //   console.log('test')
+    // })
   }
 }

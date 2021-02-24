@@ -7,6 +7,7 @@ export interface State {
   selectedDay: number | null,
   selectedMonth: number | null,
   selectedYear: number | null
+  currentWeekEvents: [] | null
 }
 
 export const INIT_STATE: State = {
@@ -15,7 +16,8 @@ export const INIT_STATE: State = {
   currentYear: null,
   selectedDay: null,
   selectedMonth: null,
-  selectedYear: null
+  selectedYear: null,
+  currentWeekEvents: null
 }
 
 export function reducer(state: State = INIT_STATE, action: eventsActions.Actions) {

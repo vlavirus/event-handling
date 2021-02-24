@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 
 import * as fromEvents from '../core'
 import { SetCurrentDate } from '../core/events/events.actions';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,8 +11,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class DashboardComponent implements OnInit {
 
-  isShown: boolean = true;
-
+  isShown: boolean = false;
 
   constructor(
     private store: Store<fromEvents.State>,
