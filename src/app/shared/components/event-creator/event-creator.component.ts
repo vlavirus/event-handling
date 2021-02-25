@@ -3,6 +3,10 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { EventService } from '../../services/event.service';
 import { AuthService } from '../../services/auth.service';
+import { Store } from '@ngrx/store';
+import { getUserInfo, State } from '../../../core';
+import firebase from 'firebase';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-event-creator',
@@ -30,12 +34,18 @@ export class EventCreatorComponent implements OnInit {
     {value: 'saturday', viewValue: 'saturday'},
   ];
 
+  activeUserMail: string | undefined;
+
   constructor(
     public event: EventService,
     public auth: AuthService,
+    private store: Store<State>
   ) { }
 
   ngOnInit(): void {
+    this.store.select(getUserInfo).subscribe(res => {
+      this.activeUserMail = res?.email;
+    })
   }
 
   submit() {
@@ -43,7 +53,7 @@ export class EventCreatorComponent implements OnInit {
       return;
     }
 
-    this.event.create(this.form.value).then(() => {
+    this.event.create(this.form.value, this.activeUserMail).then(() => {
       this.form.reset();
       this.shownToggle.emit();
     });

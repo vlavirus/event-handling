@@ -21,3 +21,5 @@ export function reducer(state: State = INIT_STATE, action: coreActions.Actions) 
       return state;
   }
 }
+
+export const getUserInfo= (state: State): User | null => state.userInfo;

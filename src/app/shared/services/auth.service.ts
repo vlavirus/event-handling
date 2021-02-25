@@ -1,14 +1,14 @@
 import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { catchError, tap } from 'rxjs/operators';
-import { Observable, Subject, throwError } from 'rxjs';
+import { Observable, of, Subject, throwError } from 'rxjs';
+import { catchError, first, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { User } from '../models/user';
 import * as fromCore from '../../core'
-import { environment } from '../../../environments/environment';
 import { SetOnLoginAction } from '../../core/core.actions';
-import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class AuthService {
@@ -37,7 +37,7 @@ export class AuthService {
       .pipe(
         tap((res) => {
           this.setToken(res);
-          this.setData(user);
+          // this.setData(user);
         }),
         catchError(this.handleError.bind(this))
       )
@@ -50,6 +50,29 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     return !!this.token;
+  }
+
+  isValidSession(): any {
+    const token = localStorage.getItem('fb-token');
+
+    return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${environment.apiKey}`, { "idToken": token })
+      .pipe(
+        first(),
+        shareReplay(1),
+        tap(res => {
+          const user = {
+            // @ts-ignore
+            email: res.users[0].email,
+            password: '',
+            returnSecureToken: true
+          }
+          this.store.dispatch(new SetOnLoginAction(user));
+        }),
+        switchMap(_ => of(true)),
+        catchError(res => {
+          return of(false);
+        })
+      )
   }
 
   private handleError(error: HttpErrorResponse) {

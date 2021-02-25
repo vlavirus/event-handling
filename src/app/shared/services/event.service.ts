@@ -1,9 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Injectable, OnInit } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 
 import Event from '../models/event';
+import * as fromEvents from '../../core';
+import { GetWeekDates, GetWeekEvents } from '../../core/events/events.actions';
+
+const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +16,10 @@ export class EventService {
   private dbPath = '/events';
   private eventsRef: AngularFireList<Event>;
 
-  tutorial: Event = new Event();
-
-  constructor(private db: AngularFireDatabase) {
+  constructor(
+    private db: AngularFireDatabase,
+    private store: Store<fromEvents.State>
+  ) {
     this.eventsRef = db.list(this.dbPath);
   }
 
@@ -33,12 +37,27 @@ export class EventService {
     return startOfDay / 1000;
   }
 
+  getWeekDates() {
+    let curr = new Date();
+    let week = [];
+
+    for (let i = 0; i <= 6; i++) {
+      let first = curr.getDate() - curr.getDay() + i
+      let day = new Date(curr.setDate(first))
+      week.push({ date: day.getDate(), dayName: days[day.getDay()].toLowerCase()})
+    }
+    // @ts-ignore
+    this.store.dispatch(new GetWeekDates(week));
+  }
+
   getAll(): AngularFireList<Event> {
     return this.eventsRef;
   }
 
-  create(event: Event): any {
+  create(event: any, activeUserMail: string | undefined): any {
+    event.dayOfWeek = days[event.eventDate.getDay()];
     event.eventDate = (event.eventDate.getTime() / 1000) + 1;
+    event.user = activeUserMail;
 
     return this.eventsRef.push(event);
   }
@@ -52,13 +71,13 @@ export class EventService {
   }
 
   getWeekEvents() {
-    debugger
     const start = this.getSunday(new Date());
     const end = this.getSaturday(new Date());
     return this.db.list('events', ref =>
       ref.orderByChild('eventDate').startAfter(start).endAt(end)).valueChanges()
-      //   .subscribe(data => {
-      //     debugger
-      // });
+      .subscribe(res => {
+        // @ts-ignore
+        this.store.dispatch(new GetWeekEvents(res));
+      })
   }
 }

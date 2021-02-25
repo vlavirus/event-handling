@@ -40,8 +40,5 @@ export class AuthComponent implements OnInit {
       this.form.reset();
       this.router.navigate([`/dashboard`]);
     });
-    // this.event.create(user).subscribe(() => {
-    //   console.log('test')
-    // })
   }
 }

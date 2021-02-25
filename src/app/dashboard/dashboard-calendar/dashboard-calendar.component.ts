@@ -10,6 +10,7 @@ export class DashboardCalendarComponent {
   dates: Array<Date>;
   days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   date = new Date();
+  currentDate = new Date();
   @Output() selected = new EventEmitter();
 
   constructor() {
@@ -24,6 +25,12 @@ export class DashboardCalendarComponent {
 
   isSameMonth(date: Date) {
     return date.getMonth() === this.date.getMonth();
+  }
+
+  isSameDay(date: Date) {
+    return date.getDate() === this.currentDate.getDate() &&
+      date.getMonth() === this.currentDate.getMonth() &&
+      date.getFullYear() === this.currentDate.getFullYear();
   }
 
   private getCalendarDays(date = new Date()) {
