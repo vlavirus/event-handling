@@ -3,10 +3,11 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  height: 350px;
+  height: 400px;
   width: 300px;
   border: 2px solid #0a0a0a;
   padding: 10px;
+  background-color: #ffffff;
   &-header {
     height: 30px;
     position: relative;
@@ -25,5 +26,17 @@
         width: fit-content;
       }
     }
+  }
+}
+
+.time-picker {
+  display: flex;
+  &__item {
+    ::ng-deep mat-form-field {
+      width: 120px;
+    }
+  }
+  &__input {
+    width: fit-content;
   }
 }

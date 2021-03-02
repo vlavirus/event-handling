@@ -1,0 +1,74 @@
+<div class="popup-panel">
+  <div class="popup-panel__item" (click)="editAccountToggle()">
+    <span class="material-icons">create</span>
+  </div>
+  <div class="popup-panel__item" (click)="deleteEvent()">
+    <span class="material-icons">delete_outline</span>
+  </div>
+  <div class="popup-panel__item">
+    <span class="material-icons">more_vert</span>
+  </div>
+  <div class="popup-panel__item" (click)="onNoClick()">
+    <span class="material-icons">clear</span>
+  </div>
+</div>
+
+<ng-container *ngIf="!isEventEdit">
+  <div class="content-panel">
+    <div class="content-panel__item">
+      <span class="material-icons content-panel__item-icon">task_alt</span>
+      <div class="content-panel__item-header">{{ data.eventName }}</div>
+    </div>
+    <div class="content-panel__item">
+      <span class="material-icons content-panel__item-icon">assignment</span>
+      <div class="content-panel__item-description">{{ data.eventType}}</div>
+    </div>
+    <div class="content-panel__item">
+      <span class="material-icons content-panel__item-icon">alarm</span>
+      <div class="content-panel__item-description">{{ data.eventDate * 1000 | date}}</div>
+    </div>
+    <div *ngIf="data.eventDescr" class="content-panel__item">
+      <span class="material-icons content-panel__item-icon">sort</span>
+      <div class="content-panel__item-description">{{ data.eventDescr }}</div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="isEventEdit">
+  <form class="content-panel" [formGroup]="form" (ngSubmit)="updateEvent()">
+    <div class="content-panel__item">
+      <span class="material-icons content-panel__item-icon">task_alt</span>
+<!--      <div class="content-panel__item-header">{{ data.eventName }}</div>-->
+      <mat-form-field class="example-full-width">
+        <mat-label>Event name</mat-label>
+        <input matInput placeholder="Event" formControlName="eventName">
+      </mat-form-field>
+    </div>
+    <div class="content-panel__item">
+      <span class="material-icons content-panel__item-icon">assignment</span>
+      <mat-button-toggle-group name="fontStyle" aria-label="Font Style" formControlName="eventType" value="event">
+        <mat-button-toggle value="event" >Event</mat-button-toggle>
+        <mat-button-toggle value="task">Task</mat-button-toggle>
+        <mat-button-toggle value="reminder">Reminder</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div class="content-panel__item">
+      <span class="material-icons content-panel__item-icon">alarm</span>
+      <mat-form-field appearance="fill">
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="eventDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div *ngIf="data.eventDescr" class="content-panel__item">
+      <span class="material-icons content-panel__item-icon">sort</span>
+      <mat-form-field class="example-full-width">
+        <mat-label>Event description</mat-label>
+        <textarea matInput placeholder="" formControlName="eventDescr"></textarea>
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" [disabled]="form.invalid">Update</button>
+  </form>
+</ng-container>
+

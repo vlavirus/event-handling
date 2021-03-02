@@ -6,18 +6,22 @@
   </div>
 
   <div class="">
-    <label>email</label>
-    <input type="mail" formControlName="email">
-<!--    <div *ngIf="form.get('email').touched && form.get('email').invalid">-->
-<!--      <small></small>-->
-<!--    </div>-->
+    <mat-form-field class="example-full-width">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="mail@mail.com" type="mail" formControlName="email">
+    </mat-form-field>
   </div>
   <div>
-    <label>pass</label>
-    <input type="password" formControlName="password">
+<!--    <label>pass</label>-->
+<!--    <input type="password" formControlName="password">-->
+    <mat-form-field class="example-full-width">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password">
+    </mat-form-field>
 <!--    <div *ngIf="form.get('password').touched && form.get('password').invalid">-->
 <!--      <small></small>-->
 <!--    </div>-->
   </div>
-  <button [disabled]="form.invalid">submit</button>
+<!--  <button [disabled]="form.invalid">submit</button>-->
+  <button mat-raised-button color="primary" [disabled]="form.invalid">submit</button>
 </form>

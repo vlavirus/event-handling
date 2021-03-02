@@ -1,19 +1,22 @@
 import { Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { filter, takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 import {
+  getWeekDates,
   getFridayEvents,
   getMondayEvents,
   getSaturdayEvents,
   getSundayEvents,
   getThursdayEvents,
   getTuesdayEvents,
-  getWednesdayEvents, getWeekDates
+  getWednesdayEvents
 } from '../../core';
 import * as fromEvents from '../../core';
+import { EventPopupComponent } from '../../shared/components/event-popup/event-popup.component';
 
 @Component({
   selector: 'app-dashboard-scheduler',
@@ -27,7 +30,6 @@ export class DashboardSchedulerComponent implements OnInit, OnDestroy {
   wednesday: [] = [];
   thursday: [] = [];
   friday: [] = [];
-
   saturday: [] = [];
 
   weekDates: [] | undefined;
@@ -35,55 +37,75 @@ export class DashboardSchedulerComponent implements OnInit, OnDestroy {
   public ngUnsubscribe$ = new Subject<void>();
 
   constructor(
-    private store: Store<fromEvents.State>
+    private store: Store<fromEvents.State>,
+    public popup: MatDialog
   ) {
     this.store.select(getWeekDates).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
       // @ts-ignore
-      this.weekDates = [...res];
+      this.weekDates = [ ...res ];
     })
   }
 
   ngOnInit(): void {
-
     this.store.select(getSundayEvents).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
       // @ts-ignore
-      this.sunday = [...res];
+      this.sunday = [ ...res ];
     });
     this.store.select(getMondayEvents).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
       // @ts-ignore
-      this.monday = [...res];
+      this.monday = [ ...res ];
     });
     this.store.select(getTuesdayEvents).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
       // @ts-ignore
-      this.tuesday = [...res];
+      this.tuesday = [ ...res ];
     });
     this.store.select(getWednesdayEvents).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
       // @ts-ignore
-      this.wednesday = [...res];
+      this.wednesday = [ ...res ];
     });
     this.store.select(getThursdayEvents).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
       // @ts-ignore
-      this.thursday = [...res];
+      this.thursday = [ ...res ];
     });
     this.store.select(getFridayEvents).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
       // @ts-ignore
-      this.friday = [...res];
+      this.friday = [ ...res ];
     });
     this.store.select(getSaturdayEvents).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
       // @ts-ignore
-      this.saturday = [...res];
+      this.saturday = [ ...res ];
     });
   }
 
+  openDialog(item: any): void {
+    const dialogRef = this.popup.open(EventPopupComponent, {
+      // width: '250px',
+      data: {
+        dayOfWeek: item.data.dayOfWeek,
+        eventDate: item.data.eventDate,
+        eventDescr: item.data.eventDescr,
+        eventName: item.data.eventName,
+        eventType: item.data.eventType,
+        id: item.id
+      }
+    });
+
+  }
 
   drop(event: CdkDragDrop<string[]>) {
+    debugger
+
+    const date = event.previousContainer.data;
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
+      // transferArrayItem(
+      //   event.previousContainer.data,
+      //   event.container.data,
+      //   event.previousIndex,
+      //   event.currentIndex
+      // );
+
     }
   }
 

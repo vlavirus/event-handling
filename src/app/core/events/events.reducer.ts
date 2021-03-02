@@ -46,28 +46,36 @@ export function reducer(state: State = INIT_STATE, action: eventsActions.Actions
       const thursdayEvents: never[] = [];
       const fridayEvents: never[] = [];
       const saturdayEvents: never[] = [];
-      action.payload.filter((res) => {
-         switch (res['dayOfWeek']) {
+      action.payload.filter(({id, data}) => {
+         // @ts-ignore
+        switch (data['dayOfWeek']) {
            case 'Sunday':
-             sundayEvents.push(res)
+             // @ts-ignore
+             sundayEvents.push({id, data})
              break
            case 'Monday' :
-             mondayEvents.push(res)
+             // @ts-ignore
+             mondayEvents.push({id, data})
              break
            case 'Tuesday' :
-             tuesdayEvents.push(res)
+             // @ts-ignore
+             tuesdayEvents.push({id, data})
              break
            case 'Wednesday' :
-             wednesdayEvents.push(res)
+             // @ts-ignore
+             wednesdayEvents.push({id, data})
              break
            case 'Thursday' :
-             thursdayEvents.push(res)
+             // @ts-ignore
+             thursdayEvents.push({id, data})
              break
            case 'Friday' :
-             fridayEvents.push(res)
+             // @ts-ignore
+             fridayEvents.push({id, data})
              break
            case 'Saturday' :
-             saturdayEvents.push(res)
+             // @ts-ignore
+             saturdayEvents.push({id, data})
              break
            default:
              return

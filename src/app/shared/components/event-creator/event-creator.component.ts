@@ -1,12 +1,11 @@
+import { Store } from '@ngrx/store';
+import { first } from 'rxjs/operators';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
-import { EventService } from '../../services/event.service';
-import { AuthService } from '../../services/auth.service';
-import { Store } from '@ngrx/store';
 import { getUserInfo, State } from '../../../core';
-import firebase from 'firebase';
-import { User } from '../../models/user';
+import { AuthService } from '../../services/auth.service';
+import { EventService } from '../../services/event.service';
 
 @Component({
   selector: 'app-event-creator',
@@ -17,21 +16,26 @@ export class EventCreatorComponent implements OnInit {
 
   @Output() shownToggle = new EventEmitter();
 
+  eventStart = `${new Date().getHours()}:${(new Date().getMinutes()<10?'0':'') + new Date().getMinutes()}`;
+  eventEnd = `${new Date().getHours()}:${(new Date().getMinutes()<10?'0':'') + new Date().getMinutes()}`;
+
   form: FormGroup = new FormGroup({
     eventName: new FormControl('', [Validators.required, Validators.minLength(5)]),
     eventType: new FormControl('event', []),
     eventDate: new FormControl(new Date(), []),
+    eventTimeStart: new FormControl(this.eventStart, []),
+    eventTimeEnd: new FormControl(this.eventEnd, []),
     eventDescr: new FormControl('', [])
   });
 
   week = [
-    {value: 'sunday', viewValue: 'sunday'},
-    {value: 'monday', viewValue: 'monday'},
-    {value: 'tuesday', viewValue: 'tuesday'},
-    {value: 'wednesday', viewValue: 'wednesday'},
-    {value: 'thursday', viewValue: 'thursday'},
-    {value: 'friday', viewValue: 'friday'},
-    {value: 'saturday', viewValue: 'saturday'},
+    { value: 'sunday', viewValue: 'sunday' },
+    { value: 'monday', viewValue: 'monday' },
+    { value: 'tuesday', viewValue: 'tuesday' },
+    { value: 'wednesday', viewValue: 'wednesday' },
+    { value: 'thursday', viewValue: 'thursday' },
+    { value: 'friday', viewValue: 'friday' },
+    { value: 'saturday', viewValue: 'saturday' },
   ];
 
   activeUserMail: string | undefined;
@@ -53,7 +57,7 @@ export class EventCreatorComponent implements OnInit {
       return;
     }
 
-    this.event.create(this.form.value, this.activeUserMail).then(() => {
+    this.event.create(this.form.value, this.activeUserMail).pipe(first()).subscribe(() => {
       this.form.reset();
       this.shownToggle.emit();
     });

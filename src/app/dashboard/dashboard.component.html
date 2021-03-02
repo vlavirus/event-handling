@@ -1,7 +1,13 @@
 <app-dashboard-header></app-dashboard-header>
 <div class="calendar-wrapper">
   <div>
-    <button (click)="toggleShow()">Create</button>
+    <div class="example-button-container">
+      <button mat-raised-button class="create" (click)="toggleShow()">
+        <mat-icon>plus_one</mat-icon>
+        Create Event
+      </button>
+    </div>
+<!--    <button >Create</button>-->
     <app-dashboard-calendar></app-dashboard-calendar>
   </div>
   <div *ngIf="isShown">

@@ -12,5 +12,22 @@
         height: 60px;
       }
     }
+    &-logo {
+      width: 15%;
+      display: flex;
+      justify-content: space-between;
+    }
+    &-logout {
+      height: fit-content;
+    }
+  }
+  ::ng-deep .header-button {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 90px;
+    height: 40px;
+    font-size: 18px;
+    font-weight: 400;
+    padding-top: 2px;
   }
 }

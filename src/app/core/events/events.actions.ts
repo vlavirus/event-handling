@@ -11,12 +11,12 @@ export class SetCurrentDate implements Action {
 
 export class GetWeekEvents implements Action {
   readonly type = GET_WEEK_EVENTS;
-  constructor(public payload: []) {}
+  constructor(public payload: { data: any; id: string }[]) {}
 }
 
 export class GetWeekDates implements Action {
   readonly type = GET_WEEK_DATES;
-  constructor(public payload: []) {}
+  constructor(public payload: any[]) {}
 }
 
 export type Actions =

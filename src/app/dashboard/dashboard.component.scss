@@ -1,5 +1,18 @@
-.calendar {
-  &-wrapper {
-    display: flex;
+:host {
+  .calendar {
+    &-wrapper {
+      display: flex;
+    }
+  }
+
+  .example-button-container {
+    text-align: center;
+    margin: 20px 0 0 0;
+  }
+
+  ::ng-deep .create {
+    border-radius: 40px;
+    padding: 5px 20px;
+    font-size: 18px;
   }
 }

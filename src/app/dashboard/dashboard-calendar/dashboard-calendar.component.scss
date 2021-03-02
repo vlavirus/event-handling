@@ -1,21 +1,51 @@
-.calendar {
-  width: 300px;
+:host {
+  .calendar {
+    width: 250px;
+    padding: 20px;
+  }
+  ul {
+    //margin-bottom: 10px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  li {
+    display: inline-block;
+    width: calc(100%/7 - 2px);
+    padding: 6px 0;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  li.days {
+    font-weight: 500;
+  }
+  li.grey {color: #ccc}
+  li.red {color: red}
+  li.blue {
+    color: #ffffff;
+    background-color: #4242c7;
+
+  }
+  li:hover {background-color: #ccc;}
+
+  .button-arrow {
+    background: none;
+    border: none;
+    outline: none;
+    :hover {
+      background-color: #e5e5e7;
+      border-radius: 50%;
+    }
+  }
+  .navigation {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 6px;
+  }
+  .current-date {
+    font-size: 16px;
+    margin-top: 4px;
+  }
 }
 
-ul {
-  margin-bottom: 10px;
-  padding: 0;
-  list-style: none;
-}
-li {
-  display: inline-block;
-  //border: 1px solid #ccc;
-  width: calc(100%/7 - 2px);
-  text-align: center;
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-li.days {font-weight: bold;}
-li.grey {color: #ccc}
-li.red {color: red}
-li:hover {background-color: #ccc;}

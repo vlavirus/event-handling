@@ -1,14 +1,26 @@
 <div class="calendar">
-
-  {{date | date}}
-  <button (click)="setMonth(-1)">&lt;</button>
-  <button (click)="setMonth(+1)">&gt;</button>
+  <div class="navigation">
+    <div class="current-date">
+      {{date | date}}
+    </div>
+    <div>
+      <button (click)="setMonth(-1)" class="button-arrow">
+        <span class="material-icons">keyboard_arrow_left</span>
+      </button>
+      <button (click)="setMonth(+1)" class="button-arrow">
+        <span class="material-icons">keyboard_arrow_right</span>
+      </button>
+    </div>
+  </div>
   <ul>
     <li class="days" *ngFor="let day of days"> {{day}} </li>
-    <li *ngFor="let date of dates"
-        [ngClass]="{grey: !isSameMonth(date), red: isSameDay(date)}"
-        (click)="selected.emit(date)">
-      {{date | date:'d'}}
-    </li>
+    <ng-container *ngFor="let date of dates">
+      <li [value]="date"
+          [ngClass]="{grey: !isSameMonth(date), blue: isSameDay(date)}"
+          (click)="showCurrentDate(date)">
+        {{date | date:'d'}}
+      </li>
+    </ng-container>
   </ul>
+<!--  <div>{{selected | ngrxPush}}</div>-->
 </div>

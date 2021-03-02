@@ -4,11 +4,13 @@ import * as coreActions from './core.actions';
 export interface State {
   isAuth: boolean | null;
   userInfo: User | null;
+  localId: string;
 }
 
 export const INIT_STATE: State = {
   isAuth: null,
-  userInfo: null
+  userInfo: null,
+  localId: ''
 }
 
 export function reducer(state: State = INIT_STATE, action: coreActions.Actions) {
@@ -22,4 +24,4 @@ export function reducer(state: State = INIT_STATE, action: coreActions.Actions) 
   }
 }
 
-export const getUserInfo= (state: State): User | null => state.userInfo;
+export const getUserInfo = (state: State): User | null => state.userInfo;
