@@ -1,18 +1,19 @@
 import { Store } from '@ngrx/store';
-import { first } from 'rxjs/operators';
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { first, takeUntil } from 'rxjs/operators';
+import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 
 import * as fromEvents from 'src/app/core';
 import { getCurrentDate } from 'src/app/core';
 import { DAY_MS } from 'src/app/shared/constants/constants';
 import { EventService } from 'src/app/shared/services/event.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: "app-dashboard-calendar",
   templateUrl: "./dashboard-calendar.component.html",
   styleUrls: ["./dashboard-calendar.component.scss"]
 })
-export class DashboardCalendarComponent implements OnInit {
+export class DashboardCalendarComponent implements OnInit, OnDestroy {
   @Output() selected = new EventEmitter();
 
   dates!: Array<Date>;
@@ -20,16 +21,23 @@ export class DashboardCalendarComponent implements OnInit {
   date: Date | null = new Date();
   currentDate = new Date();
 
+  public ngUnsubscribe$ = new Subject<any>();
+
   constructor(
     private events: EventService,
     private store: Store<fromEvents.State>
   ) { }
 
   ngOnInit(): void {
-    this.store.select(getCurrentDate).pipe(first()).subscribe(res => {
+    this.store.select(getCurrentDate).pipe(takeUntil(this.ngUnsubscribe$)).subscribe(res => {
       this.date = res;
       this.dates = this.getCalendarDays(this.date!)
     })
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe$.next(null);
+    this.ngUnsubscribe$.complete();
   }
 
   setMonth(inc: number) {
