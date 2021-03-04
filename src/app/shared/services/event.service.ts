@@ -51,7 +51,7 @@ export class EventService {
     for (let i = 0; i <= 6; i++) {
       let first = curr.getDate() - curr.getDay() + i
       let day = new Date(curr.setDate(first))
-      week.push({ date: day.getDate(), dayName: days[day.getDay()].toLowerCase()})
+      week.push({ date: day.getDate(), month: day.getMonth(), year: day.getFullYear(), dayName: days[day.getDay()].toLowerCase()})
     }
     this.eventStore.dispatch(new GetWeekDates(week));
     this.store.select(getUserInfo as Selector<any, any>).pipe(first()).subscribe(res => {

@@ -36,6 +36,10 @@ export class DashboardSchedulerComponent implements OnInit, OnDestroy {
 
   weekDates: [] = [];
 
+  today = new Date().getDate();
+  month = new Date().getMonth();
+  year = new Date().getFullYear();
+
   public ngUnsubscribe$ = new Subject<any>();
 
   constructor(
@@ -43,9 +47,12 @@ export class DashboardSchedulerComponent implements OnInit, OnDestroy {
     private events: EventService,
     public popup: MatDialog
   ) {
-    this.store.select(getWeekDates).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
-      // @ts-ignore
-      this.weekDates = [...res];
+    this.store.select(getWeekDates).pipe(
+      filter(res => !!res),
+      takeUntil(this.ngUnsubscribe$))
+      .subscribe(res => {
+        // @ts-ignore
+        this.weekDates = [...res];
     })
   }
 
@@ -75,7 +82,6 @@ export class DashboardSchedulerComponent implements OnInit, OnDestroy {
 
   openDialog(item: any): void {
     const dialogRef = this.popup.open(EventPopupComponent, {
-      // width: '250px',
       data: {
         dayOfWeek: item.data.dayOfWeek,
         eventDate: item.data.eventDate,

@@ -2,7 +2,13 @@
   <ng-container *ngFor="let day of weekDates; index as i">
       <div class="example-container">
         <h2>{{day['dayName']}}</h2>
-        <div class="day-date">{{day['date']}}</div>
+        <div *ngIf="day['date'] === today
+          && day['month'] === month
+          && day['year'] === year; else elseDay" class="day-date day-date__current">{{day['date']}}</div>
+        <ng-template #elseDay>
+          <div class="day-date">{{day['date']}}</div>
+        </ng-template>
+
         <div
           cdkDropList
           [id]="day['dayName']"
