@@ -6,7 +6,7 @@ export const GET_WEEK_DATES = '[EVENTS] Get week dates';
 
 export class SetCurrentDate implements Action {
   readonly type = ON_ADD_CURRENT_DATA;
-  constructor(public payload: { day: number, month: number, year: number }) {}
+  constructor(public payload: { date: Date }) {}
 }
 
 export class GetWeekEvents implements Action {

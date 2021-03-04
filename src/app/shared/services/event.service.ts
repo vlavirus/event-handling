@@ -1,15 +1,15 @@
 import { of } from 'rxjs';
-import { Store } from '@ngrx/store';
+import { Selector, Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { first, map } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 
-import Event from '../models/event';
-import { getUserInfo } from '../../core';
-import  * as fromCore from '../../core/core.reducer';
-import * as fromEvents from '../../core/events/events.reducer';
-import { GetWeekDates, GetWeekEvents } from '../../core/events/events.actions';
+import Event from 'src/app/shared/models/event';
+import { getUserInfo } from 'src/app/core';
+import  * as fromCore from 'src/app/core/core.reducer';
+import * as fromEvents from 'src/app/core/events/events.reducer';
+import { GetWeekDates, GetWeekEvents } from 'src/app/core/events/events.actions';
 
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -30,7 +30,6 @@ export class EventService {
     private store: Store<fromCore.State>
   ) {
     this.eventsRef = db.list(this.dbPath);
-    // @ts-ignore
   }
 
   private getSunday(date: Date): number {
@@ -54,13 +53,9 @@ export class EventService {
       let day = new Date(curr.setDate(first))
       week.push({ date: day.getDate(), dayName: days[day.getDay()].toLowerCase()})
     }
-    // @ts-ignore
     this.eventStore.dispatch(new GetWeekDates(week));
-
-    // @ts-ignore
-    this.store.select(getUserInfo).pipe(first()).subscribe(res => {
-      // @ts-ignore
-      this.userEmail = res.email;
+    this.store.select(getUserInfo as Selector<any, any>).pipe(first()).subscribe(res => {
+    this.userEmail = res.email;
     });
   }
 
@@ -86,8 +81,8 @@ export class EventService {
 
 
   getWeekEvents(date = new Date()) {
-    // @ts-ignore
-    this.store.select(getUserInfo).pipe(first()).subscribe((res) => {
+
+    this.store.select(getUserInfo as Selector<any, any>).pipe(first()).subscribe((res) => {
       this.userEmail = res && res.email;
     })
 

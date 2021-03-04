@@ -12,16 +12,10 @@
     </mat-form-field>
   </div>
   <div>
-<!--    <label>pass</label>-->
-<!--    <input type="password" formControlName="password">-->
     <mat-form-field class="example-full-width">
       <mat-label>Password</mat-label>
       <input matInput type="password" formControlName="password">
     </mat-form-field>
-<!--    <div *ngIf="form.get('password').touched && form.get('password').invalid">-->
-<!--      <small></small>-->
-<!--    </div>-->
   </div>
-<!--  <button [disabled]="form.invalid">submit</button>-->
   <button mat-raised-button color="primary" [disabled]="form.invalid">submit</button>
 </form>

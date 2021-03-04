@@ -2,7 +2,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { EventService } from '../../services/event.service';
+import { EventService } from 'src/app/shared/services/event.service';
 
 @Component({
   selector: 'app-event-popup',
@@ -14,6 +14,8 @@ export class EventPopupComponent implements OnInit {
   eventName: string = '';
   eventDate: any = '';
   userName: string = '';
+  eventStart = this.data.eventTimeStart;
+  eventEnd = this.data.eventTimeEnd;
 
   isEventEdit = false;
 
@@ -21,7 +23,9 @@ export class EventPopupComponent implements OnInit {
     eventType: new FormControl(this.data.eventType, []),
     eventName: new FormControl(this.data.eventName, []),
     eventDescr: new FormControl(this.data.eventDescr, []),
-    eventDate: new FormControl(this.data.eventDate, [])
+    eventTimeStart: new FormControl(this.data.eventTimeStart, []),
+    eventTimeEnd: new FormControl(this.data.eventTimeEnd, []),
+    eventDate: new FormControl(new Date(this.data.eventDate * 1000), [])
   });
 
   constructor(
@@ -42,9 +46,9 @@ export class EventPopupComponent implements OnInit {
   }
 
   updateEvent() {
-
     this.events.updateEvent(this.data.id, this.form.value);
     this.editAccountToggle();
+    this.onNoClick();
   }
 
   public editAccountToggle(): void {

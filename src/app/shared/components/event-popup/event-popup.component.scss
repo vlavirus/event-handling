@@ -1,11 +1,11 @@
 :host {
   display: block;
+  width: 300px;
     mat-dialog-container {
       padding: 10px;
     }
   .popup-panel {
     display: flex;
-    width: 350px;
     justify-content: flex-end;
     &__item {
       margin: 0 5px;
@@ -22,13 +22,35 @@
       }
       &-header {
         font-size: 20px;
+        width: 100%;
+        white-space: normal
       }
       &-description {
         font-size: 14px;
       }
+      &-input {
+        width: 100%;
+        justify-content: space-between;
+      }
+      &-toggle {
+        width: inherit;
+      }
+    }
+    &__time {
+      display: flex;
+      margin: 0 10px;
     }
   }
 }
 
-
-
+.time-picker {
+  display: flex;
+  &__item {
+    ::ng-deep mat-form-field {
+      width: 120px;
+    }
+  }
+  &__input {
+    width: fit-content;
+  }
+}

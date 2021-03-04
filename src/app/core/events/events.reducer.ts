@@ -1,6 +1,7 @@
 import * as eventsActions from './events.actions';
 
 export interface State {
+  currentDate: Date | null,
   currentDay: number | null,
   currentMonth: number | null,
   currentYear: number | null,
@@ -18,6 +19,7 @@ export interface State {
 }
 
 export const INIT_STATE: State = {
+  currentDate: null,
   currentDay: null,
   currentMonth: null,
   currentYear: null,
@@ -37,45 +39,38 @@ export const INIT_STATE: State = {
 export function reducer(state: State = INIT_STATE, action: eventsActions.Actions) {
   switch (action.type) {
     case eventsActions.ON_ADD_CURRENT_DATA:
-      return { ...state, currentDay: action.payload.day, currentMonth: action.payload.month, currentYear: action.payload.year }
+      return { ...state, currentDate: action.payload.date }
     case eventsActions.GET_WEEK_EVENTS:
-      const sundayEvents: never[] = [];
-      const mondayEvents: never[] = [];
-      const tuesdayEvents: never[] = [];
-      const wednesdayEvents: never[] = [];
-      const thursdayEvents: never[] = [];
-      const fridayEvents: never[] = [];
-      const saturdayEvents: never[] = [];
+      const sundayEvents: {}[] = [];
+      const mondayEvents: {}[] = [];
+      const tuesdayEvents: {}[] = [];
+      const wednesdayEvents: {}[] = [];
+      const thursdayEvents: {}[] = [];
+      const fridayEvents: {}[] = [];
+      const saturdayEvents: {}[] = [];
       action.payload.filter(({id, data}) => {
-         // @ts-ignore
+        const event = { id, data };
         switch (data['dayOfWeek']) {
            case 'Sunday':
-             // @ts-ignore
-             sundayEvents.push({id, data})
+             sundayEvents.push(event)
              break
-           case 'Monday' :
-             // @ts-ignore
-             mondayEvents.push({id, data})
+           case 'Monday':
+             mondayEvents.push(event)
              break
-           case 'Tuesday' :
-             // @ts-ignore
-             tuesdayEvents.push({id, data})
+           case 'Tuesday':
+             tuesdayEvents.push(event)
              break
-           case 'Wednesday' :
-             // @ts-ignore
-             wednesdayEvents.push({id, data})
+           case 'Wednesday':
+             wednesdayEvents.push(event)
              break
-           case 'Thursday' :
-             // @ts-ignore
-             thursdayEvents.push({id, data})
+           case 'Thursday':
+             thursdayEvents.push(event)
              break
-           case 'Friday' :
-             // @ts-ignore
-             fridayEvents.push({id, data})
+           case 'Friday':
+             fridayEvents.push(event)
              break
-           case 'Saturday' :
-             // @ts-ignore
-             saturdayEvents.push({id, data})
+           case 'Saturday':
+             saturdayEvents.push(event)
              break
            default:
              return
@@ -107,3 +102,4 @@ export const getThursdayEvents = (state: State): [] | null => state.thursdayEven
 export const getFridayEvents = (state: State): [] | null => state.fridayEvents;
 export const getSaturdayEvents = (state: State): [] | null => state.saturdayEvents;
 export const getWeekDates = (state: State): [] | null => state.weekDates;
+export const getCurrentDate = (state: State): Date | null => state.currentDate;

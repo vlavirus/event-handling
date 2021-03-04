@@ -1,9 +1,10 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { User } from '../shared/models/user';
-import { AuthService } from '../shared/services/auth.service';
-import { Router } from '@angular/router';
-import { EventService } from '../shared/services/event.service';
+
+import { User } from 'src/app/shared/models/user';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { EventService } from 'src/app/shared/services/event.service';
 
 @Component({
   selector: 'app-auth',

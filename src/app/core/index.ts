@@ -1,6 +1,7 @@
+import { createSelector } from '@ngrx/store';
+
 import * as fromCore from './core.reducer';
 import * as fromEvents from './events/events.reducer';
-import { createSelector } from '@ngrx/store';
 
 export interface State {
   core: fromCore.State,
@@ -14,6 +15,7 @@ export const reducers = {
 
 export const getCoreState = (state: State) => state.core;
 export const getEventsState = (state: State) => state.events;
+
 export const getUserInfo = createSelector(
   getCoreState,
   fromCore.getUserInfo
@@ -57,4 +59,9 @@ export const getSaturdayEvents = createSelector(
 export const getWeekDates = createSelector(
   getEventsState,
   fromEvents.getWeekDates
+);
+
+export const getCurrentDate = createSelector(
+  getEventsState,
+  fromEvents.getCurrentDate
 );

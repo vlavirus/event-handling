@@ -2,15 +2,13 @@ import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject, throwError } from 'rxjs';
-import { catchError, first, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError, first, shareReplay, switchMap, tap } from 'rxjs/operators';
 
-import { User } from '../models/user';
-import * as fromCore from '../../core';
-import { SetOnLoginAction } from '../../core/core.actions';
-import { environment } from '../../../environments/environment';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
-import Event from '../models/event';
+import { User } from 'src/app/shared/models/user';
+import * as fromCore from 'src/app/core';
+import { SetOnLoginAction } from 'src/app/core/core.actions';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class AuthService {

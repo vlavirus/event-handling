@@ -1,35 +1,45 @@
-import { Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { first } from 'rxjs/operators';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 
-import { EventService } from '../../shared/services/event.service';
-
-const DAY_MS = 60 * 60 * 24 * 1000;
+import * as fromEvents from 'src/app/core';
+import { getCurrentDate } from 'src/app/core';
+import { DAY_MS } from 'src/app/shared/constants/constants';
+import { EventService } from 'src/app/shared/services/event.service';
 
 @Component({
   selector: "app-dashboard-calendar",
   templateUrl: "./dashboard-calendar.component.html",
-  styleUrls: ["./dashboard-calendar.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ["./dashboard-calendar.component.scss"]
 })
-export class DashboardCalendarComponent {
+export class DashboardCalendarComponent implements OnInit {
   @Output() selected = new EventEmitter();
 
-  dates: Array<Date>;
+  dates!: Array<Date>;
   days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  date = new Date();
+  date: Date | null = new Date();
   currentDate = new Date();
 
-  constructor(private events: EventService) {
-    this.dates = this.getCalendarDays(this.date);
+  constructor(
+    private events: EventService,
+    private store: Store<fromEvents.State>
+  ) { }
+
+  ngOnInit(): void {
+    this.store.select(getCurrentDate).pipe(first()).subscribe(res => {
+      this.date = res;
+      this.dates = this.getCalendarDays(this.date!)
+    })
   }
 
   setMonth(inc: number) {
-    const [year, month] = [this.date.getFullYear(), this.date.getMonth()];
+    const [year, month] = [this.date!.getFullYear(), this.date!.getMonth()];
     this.date = new Date(year, month + inc, 1);
     this.dates = this.getCalendarDays(this.date);
   }
 
   isSameMonth(date: Date) {
-    return date.getMonth() === this.date.getMonth();
+    return date.getMonth() === this.date!.getMonth();
   }
 
   isSameDay(date: Date) {
@@ -44,8 +54,7 @@ export class DashboardCalendarComponent {
   }
 
   private getCalendarDays(date = new Date()) {
-    // @ts-ignore
-    const calendarStartTime = this.getCalendarStartDay(date).getTime();
+    const calendarStartTime = this.getCalendarStartDay(date)!.getTime();
 
     return this.range(0, 41).map(
       num => new Date(calendarStartTime + DAY_MS * num)

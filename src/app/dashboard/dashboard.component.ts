@@ -2,8 +2,8 @@ import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
 
 import * as fromEvents from '../core'
-import { SetCurrentDate } from '../core/events/events.actions';
 import { AuthService } from '../shared/services/auth.service';
+import { SetCurrentDate } from '../core/events/events.actions';
 import { EventService } from '../shared/services/event.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     const curDate = new Date();
-    this.store.dispatch(new SetCurrentDate({day: curDate.getDate(), month: curDate.getMonth(), year: curDate.getFullYear() }));
+    this.store.dispatch(new SetCurrentDate({ date:  curDate }));
     this.auth.isValidSession().subscribe((res: any) => {
       if (res) {
         this.events.getWeekEvents();

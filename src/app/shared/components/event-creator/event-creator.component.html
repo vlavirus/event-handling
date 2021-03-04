@@ -1,16 +1,18 @@
 <div class="creator">
   <div class="creator-header">
-    <div class="creator-header__close" (click)="shownToggle.emit()">&times;</div>
+    <div class="creator-header__close" (click)="shownToggle.emit()">
+      <span class="material-icons">clear</span>
+    </div>
   </div>
   <form class="creator-form" [formGroup]="form" (ngSubmit)="submit()">
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="example-full-width creator-title">
       <mat-label>Event name</mat-label>
-      <input matInput placeholder="Event" formControlName="eventName">
+      <input matInput placeholder="Event" formControlName="eventName" class="creator-title" >
     </mat-form-field>
-    <mat-button-toggle-group name="fontStyle" aria-label="Font Style" formControlName="eventType" value="event">
-      <mat-button-toggle value="event" >Event</mat-button-toggle>
-      <mat-button-toggle value="task">Task</mat-button-toggle>
-      <mat-button-toggle value="reminder">Reminder</mat-button-toggle>
+    <mat-button-toggle-group name="fontStyle" aria-label="Font Style" formControlName="eventType" class="creator-toggle" value="event">
+      <mat-button-toggle value="event" class="creator-toggle__item">Event</mat-button-toggle>
+      <mat-button-toggle value="task" class="creator-toggle__item">Task</mat-button-toggle>
+      <mat-button-toggle value="reminder" class="creator-toggle__item">Reminder</mat-button-toggle>
     </mat-button-toggle-group>
     <div>
       <mat-form-field appearance="fill">
@@ -37,7 +39,7 @@
     </div>
 
     <div>
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="example-full-width creator-descr">
         <mat-label>Event description</mat-label>
         <textarea matInput placeholder="" formControlName="eventDescr"></textarea>
       </mat-form-field>

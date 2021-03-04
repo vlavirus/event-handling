@@ -6,51 +6,71 @@
         <div
           cdkDropList
           [id]="day['dayName']"
-          [cdkDropListData]="day"
+          [cdkDropListData]="{ dayNumber: i, dayName: day['dayName'], data: this[day['dayName']] }"
           class="example-list"
           (cdkDropListDropped)="drop($event)">
-<!--          <div class="example-box" *ngFor="let item of day['dayName']" cdkDrag>{{item['eventName']}}</div>-->
           <container-element [ngSwitch]="day['dayName']">
             <div *ngSwitchCase="'sunday'">
-              <div class="example-box"  *ngFor="let item of sunday" cdkDrag (click)="openDialog(item)">
+              <div class="example-box" *ngFor="let item of sunday" cdkDrag (click)="openDialog(item)">
                 <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                {{item['data']['eventName']}}
+                <div class="example-box__title">
+                  <span>{{ item['data']['eventName'] }}</span>
+                  <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
+                </div>
               </div>
             </div>
             <div *ngSwitchCase="'monday'">
-              <div class="example-box"  *ngFor="let item of monday" cdkDrag (click)="openDialog(item)">
+              <div class="example-box" *ngFor="let item of monday" cdkDrag (click)="openDialog(item)">
                 <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                {{item['data']['eventName']}}
+                <div class="example-box__title">
+                  <span>{{ item['data']['eventName'] }}</span>
+                  <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
+                </div>
               </div>
             </div>
             <div *ngSwitchCase="'tuesday'">
-              <div class="example-box"  *ngFor="let item of tuesday" cdkDrag (click)="openDialog(item)">
+              <div class="example-box" *ngFor="let item of tuesday" cdkDrag (click)="openDialog(item)">
                 <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                {{item['data']['eventName']}}
+                <div class="example-box__title">
+                  <span>{{ item['data']['eventName'] }}</span>
+                  <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
+                </div>
               </div>
             </div>
             <div *ngSwitchCase="'wednesday'">
-              <div class="example-box"  *ngFor="let item of wednesday" cdkDrag (click)="openDialog(item)">
+              <div class="example-box" *ngFor="let item of wednesday" cdkDrag (click)="openDialog(item)">
                 <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                {{item['data']['eventName']}}
+                <div class="example-box__title">
+                  <span>{{ item['data']['eventName'] }}</span>
+                  <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
+                </div>
               </div>
             </div>
             <div *ngSwitchCase="'thursday'">
-              <div class="example-box"  *ngFor="let item of thursday" cdkDrag (click)="openDialog(item)">
+              <div class="example-box" *ngFor="let item of thursday" cdkDrag (click)="openDialog(item)">
                 <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                {{item['data']['eventName']}}
+                <div class="example-box__title">
+                  <span>{{ item['data']['eventName'] }}</span>
+                  <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
+                </div>
               </div>
             </div>
             <div *ngSwitchCase="'friday'">
-              <div class="example-box"  *ngFor="let item of friday" cdkDrag (click)="openDialog(item)">
+              <div class="example-box" *ngFor="let item of friday" cdkDrag (click)="openDialog(item)">
                 <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                {{item['data']['eventName']}}
+                <div class="example-box__title">
+                  <span>{{ item['data']['eventName'] }}</span>
+                  <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
+                </div>
               </div>
             </div>
             <div *ngSwitchCase="'saturday'">
-              <div class="example-box"  *ngFor="let item of saturday" cdkDrag (click)="openDialog(item)">
+              <div class="example-box" *ngFor="let item of saturday" cdkDrag (click)="openDialog(item)">
                 <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                {{item['data']['eventName']}}
+                <div class="example-box__title">
+                  <span>{{ item['data']['eventName'] }}</span>
+                  <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
+                </div>
               </div>
             </div>
           </container-element>
@@ -58,8 +78,3 @@
       </div>
   </ng-container>
 </div>
-
-
-<!-- Copyright 2020 Google LLC. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license -->

@@ -3,9 +3,9 @@ import { first } from 'rxjs/operators';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
-import { getUserInfo, State } from '../../../core';
-import { AuthService } from '../../services/auth.service';
-import { EventService } from '../../services/event.service';
+import { getUserInfo, State } from 'src/app/core';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { EventService } from 'src/app/shared/services/event.service';
 
 @Component({
   selector: 'app-event-creator',
@@ -17,7 +17,7 @@ export class EventCreatorComponent implements OnInit {
   @Output() shownToggle = new EventEmitter();
 
   eventStart = `${new Date().getHours()}:${(new Date().getMinutes()<10?'0':'') + new Date().getMinutes()}`;
-  eventEnd = `${new Date().getHours()}:${(new Date().getMinutes()<10?'0':'') + new Date().getMinutes()}`;
+  eventEnd = `${new Date().getHours() + 1}:${(new Date().getMinutes()<10?'0':'') + new Date().getMinutes()}`;
 
   form: FormGroup = new FormGroup({
     eventName: new FormControl('', [Validators.required, Validators.minLength(5)]),
