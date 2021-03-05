@@ -13,6 +13,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 import { EventCreatorComponent } from './components/event-creator/event-creator.component';
 import { EventPopupComponent } from './components/event-popup/event-popup.component';
+import { NotificationComponent } from './components/notification/notification.component';
 
 @NgModule({
   imports: [
@@ -28,11 +29,12 @@ import { EventPopupComponent } from './components/event-popup/event-popup.compon
     MatNativeDateModule,
     MatButtonToggleModule
   ],
-  exports: [
-    HttpClientModule,
-    EventCreatorComponent
-  ],
+    exports: [
+        HttpClientModule,
+        EventCreatorComponent,
+        NotificationComponent
+    ],
   providers: [MatDatepickerModule],
-  declarations: [EventCreatorComponent, EventPopupComponent]
+  declarations: [EventCreatorComponent, EventPopupComponent, NotificationComponent]
 })
 export class SharedModule { }

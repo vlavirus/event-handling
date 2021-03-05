@@ -19,6 +19,7 @@ import { EventsModule } from './core/events/events.module';
 import { AuthService } from './shared/services/auth.service';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 const INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -44,6 +45,7 @@ const INTERCEPTOR_PROVIDER: Provider = {
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     BrowserAnimationsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: true }),
   ],
   providers: [AuthService, AuthGuard, INTERCEPTOR_PROVIDER],
   bootstrap: [AppComponent]
