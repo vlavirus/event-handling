@@ -1,7 +1,7 @@
 <div class="calendar">
   <div class="navigation">
     <div class="current-date">
-      {{date | date}}
+      {{ date | date }}
     </div>
     <div>
       <button (click)="setMonth(-1)" class="button-arrow">
@@ -13,12 +13,12 @@
     </div>
   </div>
   <ul>
-    <li class="days" *ngFor="let day of days"> {{day}} </li>
+    <li class="days" *ngFor="let day of days"> {{ day }} </li>
     <ng-container *ngFor="let date of dates">
       <li [value]="date"
           [ngClass]="{grey: !isSameMonth(date), blue: isSameDay(date)}"
           (click)="showCurrentDate(date)">
-        {{date | date:'d'}}
+        {{ date | date:'d' }}
       </li>
     </ng-container>
   </ul>

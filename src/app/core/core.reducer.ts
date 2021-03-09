@@ -1,5 +1,5 @@
-import { User } from 'src/app/shared/models/user';
 import * as coreActions from './core.actions';
+import { User } from 'src/app/shared/models/user';
 
 export interface State {
   isAuth: boolean | null;

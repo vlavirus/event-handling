@@ -1,86 +1,28 @@
 <div cdkDropListGroup>
   <ng-container *ngFor="let day of weekDates; index as i">
-      <div class="example-container">
-        <h2>{{day['dayName']}}</h2>
-        <div *ngIf="day['date'] === today
-          && day['month'] === month
-          && day['year'] === year; else elseDay" class="day-date day-date__current">{{day['date']}}</div>
-        <ng-template #elseDay>
-          <div class="day-date">{{day['date']}}</div>
-        </ng-template>
+    <div class="example-container">
+      <h2>{{day['dayName']}}</h2>
+      <div *ngIf="day['date'] === today
+        && day['month'] === month
+        && day['year'] === year; else elseDay" class="day-date day-date__current">{{day['date']}}</div>
+      <ng-template #elseDay>
+        <div class="day-date">{{day['date']}}</div>
+      </ng-template>
 
-        <div
-          cdkDropList
-          [id]="day['dayName']"
-          [cdkDropListData]="{ dayNumber: i, dayName: day['dayName'], data: this.weekData[day['dayName']] }"
-          class="example-list"
-          (cdkDropListDropped)="drop($event)">
-          <container-element [ngSwitch]="day['dayName']">
-            <div *ngSwitchCase="'sunday'">
-              <div class="example-box" *ngFor="let item of weekData.sunday" cdkDrag (click)="openDialog(item)">
-                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                <div class="example-box__title">
-                  <span>{{ item['data']['eventName'] }}</span>
-                  <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
-                </div>
-              </div>
-            </div>
-            <div *ngSwitchCase="'monday'">
-              <div class="example-box" *ngFor="let item of weekData.monday" cdkDrag (click)="openDialog(item)">
-                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                <div class="example-box__title">
-                  <span>{{ item['data']['eventName'] }}</span>
-                  <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
-                </div>
-              </div>
-            </div>
-            <div *ngSwitchCase="'tuesday'">
-              <div class="example-box" *ngFor="let item of weekData.tuesday" cdkDrag (click)="openDialog(item)">
-                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                <div class="example-box__title">
-                  <span>{{ item['data']['eventName'] }}</span>
-                  <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
-                </div>
-              </div>
-            </div>
-            <div *ngSwitchCase="'wednesday'">
-              <div class="example-box" *ngFor="let item of weekData.wednesday" cdkDrag (click)="openDialog(item)">
-                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                <div class="example-box__title">
-                  <span>{{ item['data']['eventName'] }}</span>
-                  <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
-                </div>
-              </div>
-            </div>
-            <div *ngSwitchCase="'thursday'">
-              <div class="example-box" *ngFor="let item of weekData.thursday" cdkDrag (click)="openDialog(item)">
-                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                <div class="example-box__title">
-                  <span>{{ item['data']['eventName'] }}</span>
-                  <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
-                </div>
-              </div>
-            </div>
-            <div *ngSwitchCase="'friday'">
-              <div class="example-box" *ngFor="let item of weekData.friday" cdkDrag (click)="openDialog(item)">
-                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                <div class="example-box__title">
-                  <span>{{ item['data']['eventName'] }}</span>
-                  <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
-                </div>
-              </div>
-            </div>
-            <div *ngSwitchCase="'saturday'">
-              <div class="example-box" *ngFor="let item of weekData.saturday" cdkDrag (click)="openDialog(item)">
-                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                <div class="example-box__title">
-                  <span>{{ item['data']['eventName'] }}</span>
-                  <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
-                </div>
-              </div>
-            </div>
-          </container-element>
+      <div
+        cdkDropList
+        [id]="day['dayName']"
+        [cdkDropListData]="{ dayNumber: i, dayName: day['dayName'], data: this.weekData[day['dayName']] }"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of weekData[day['dayName']]" cdkDrag (click)="openDialog(item)">
+          <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+          <div class="example-box__title">
+            <span>{{ item['data']['eventName'] }}</span>
+            <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
+          </div>
         </div>
       </div>
+    </div>
   </ng-container>
 </div>
