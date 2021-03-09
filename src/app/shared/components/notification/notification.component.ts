@@ -27,11 +27,7 @@ export class NotificationComponent implements OnInit {
     }
   }
 
-  constructor(
-    private swPush: SwPush,
-    // private newsletterService: NewsletterService
-  ) {
-  }
+  constructor(private swPush: SwPush) {}
 
   ngOnInit(): void {
   }
