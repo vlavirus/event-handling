@@ -1,12 +1,12 @@
+import { Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { first, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 
 import * as fromEvents from 'src/app/core';
 import { getCurrentDate } from 'src/app/core';
 import { DAY_MS } from 'src/app/shared/constants/constants';
 import { EventService } from 'src/app/shared/services/event.service';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: "app-dashboard-calendar",

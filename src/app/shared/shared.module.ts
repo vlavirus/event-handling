@@ -30,9 +30,9 @@ import { NotificationComponent } from './components/notification/notification.co
     MatButtonToggleModule
   ],
     exports: [
-        HttpClientModule,
-        EventCreatorComponent,
-        NotificationComponent
+      HttpClientModule,
+      EventCreatorComponent,
+      NotificationComponent
     ],
   providers: [MatDatepickerModule],
   declarations: [EventCreatorComponent, EventPopupComponent, NotificationComponent]

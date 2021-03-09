@@ -26,15 +26,17 @@ import { EventPopupComponent } from 'src/app/shared/components/event-popup/event
   styleUrls: ['./dashboard-scheduler.component.scss']
 })
 export class DashboardSchedulerComponent implements OnInit, OnDestroy {
-  sunday: never[] = [];
-  monday: never[] = [];
-  tuesday: never[] = [];
-  wednesday: never[] = [];
-  thursday: never[] = [];
-  friday: never[] = [];
-  saturday: never[] = [];
+  weekData: { [index: string]: any } = {
+    sunday: [],
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [],
+    friday: [],
+    saturday: []
+  };
 
-  weekDates: [] = [];
+  weekDates: any[] = [];
 
   today = new Date().getDate();
   month = new Date().getMonth();
@@ -46,37 +48,33 @@ export class DashboardSchedulerComponent implements OnInit, OnDestroy {
     private store: Store<fromEvents.State>,
     private events: EventService,
     public popup: MatDialog
-  ) {
-    this.store.select(getWeekDates).pipe(
-      filter(res => !!res),
-      takeUntil(this.ngUnsubscribe$))
-      .subscribe(res => {
-        // @ts-ignore
-        this.weekDates = [...res];
-    })
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.store.select(getWeekDates).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe((res: [] | null) => {
+      // @ts-ignore
+      this.weekDates = [...res];
+    });
     this.store.select(getSundayEvents).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
-      this.sunday = [...res];
+      this.weekData.sunday = [...res];
     });
     this.store.select(getMondayEvents).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
-      this.monday = [...res];
+      this.weekData.monday = [...res];
     });
     this.store.select(getTuesdayEvents).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
-      this.tuesday = [...res];
+      this.weekData.tuesday = [...res];
     });
     this.store.select(getWednesdayEvents).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
-      this.wednesday = [...res];
+      this.weekData.wednesday = [...res];
     });
     this.store.select(getThursdayEvents).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
-      this.thursday = [...res];
+      this.weekData.thursday = [...res];
     });
     this.store.select(getFridayEvents).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
-      this.friday = [...res];
+      this.weekData.friday = [...res];
     });
     this.store.select(getSaturdayEvents).pipe(filter(res => !!res), takeUntil(this.ngUnsubscribe$)).subscribe(res => {
-      this.saturday = [...res];
+      this.weekData.saturday = [...res];
     });
   }
 
@@ -97,24 +95,15 @@ export class DashboardSchedulerComponent implements OnInit, OnDestroy {
   }
 
   drop(event: CdkDragDrop<any>) {
-    // debugger
-    if (event.previousContainer === event.container) {
-      // moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      // transferArrayItem(
-      //   event.previousContainer.data,
-      //   event.container.data,
-      //   event.previousIndex,
-      //   event.currentIndex
-      // );
+    if (event.previousContainer !== event.container) {
       const draggedEvent = JSON.parse(JSON.stringify(event.previousContainer.data['data'][event.previousIndex]));
       const prevDayNumber = event.previousContainer.data['dayNumber'];
       const dayNumber = event.container.data['dayNumber'];
       const dayName = event.previousContainer.data['dayName'];
       let newEventDate = draggedEvent.data.eventDate + (( dayNumber - prevDayNumber ) * DAY_S);
       draggedEvent.data.eventDate = new Date(newEventDate * 1000);
-      // @ts-ignore
-      this[dayName] = this[dayName].filter((item, id) => id !== event.previousIndex);
+
+      this.weekData[dayName] = this.weekData[dayName].filter((item: any, id: number) => id !== event.previousIndex);
       this.events.updateEvent(draggedEvent.id, draggedEvent.data);
     }
   }
