@@ -14,8 +14,11 @@ export class EventPopupComponent implements OnInit {
   eventName: string = '';
   eventDate: any = '';
   userName: string = '';
-  eventStart = this.data.eventTimeStart;
-  eventEnd = this.data.eventTimeEnd;
+
+  timeStart = new Date(this.data.eventTimeStart * 1000);
+  timeEnd = new Date(this.data.eventTimeEnd * 1000);
+  eventStart = new Date(this.timeStart.getTime() - this.timeStart.getTimezoneOffset()*60000).toISOString().substring(0,19);
+  eventEnd = new Date(this.timeEnd.getTime() - this.timeEnd.getTimezoneOffset()*60000).toISOString().substring(0,19);
 
   isEventEdit = false;
 
@@ -23,8 +26,8 @@ export class EventPopupComponent implements OnInit {
     eventType: new FormControl(this.data.eventType, []),
     eventName: new FormControl(this.data.eventName, []),
     eventDescr: new FormControl(this.data.eventDescr, []),
-    eventTimeStart: new FormControl(this.data.eventTimeStart, []),
-    eventTimeEnd: new FormControl(this.data.eventTimeEnd, []),
+    eventTimeStart: new FormControl(this.eventStart, []),
+    eventTimeEnd: new FormControl(this.eventEnd, []),
     eventDate: new FormControl(new Date(this.data.eventDate * 1000), [])
   });
 
@@ -43,6 +46,8 @@ export class EventPopupComponent implements OnInit {
 
   deleteEvent() {
     this.events.deleteEvent(this.data.id);
+    this.editAccountToggle();
+    this.onNoClick();
   }
 
   updateEvent() {

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 import { HttpClientModule } from '@angular/common/http';
 import {MatButtonModule} from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -11,12 +12,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
-import { EventCreatorComponent } from './components/event-creator/event-creator.component';
 import { EventPopupComponent } from './components/event-popup/event-popup.component';
 import { NotificationComponent } from './components/notification/notification.component';
+import { EventCreatorComponent } from './components/event-creator/event-creator.component';
+
 
 @NgModule({
   imports: [
+    MatListModule,
     BrowserModule,
     MatIconModule,
     MatInputModule,

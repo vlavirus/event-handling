@@ -91,7 +91,6 @@ export class DashboardSchedulerComponent implements OnInit, OnDestroy {
         id: item.id
       }
     });
-
   }
 
   drop(event: CdkDragDrop<any>) {

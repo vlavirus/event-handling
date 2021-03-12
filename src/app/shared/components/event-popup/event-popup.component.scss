@@ -1,6 +1,6 @@
 :host {
   display: block;
-  width: 300px;
+  width: 510px;
     mat-dialog-container {
       padding: 10px;
     }
@@ -47,7 +47,7 @@
   display: flex;
   &__item {
     ::ng-deep mat-form-field {
-      width: 120px;
+      width: 240px;
     }
   }
   &__input {

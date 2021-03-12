@@ -1,15 +1,15 @@
 import { of } from 'rxjs';
-import { Selector, Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
-import { first, map } from 'rxjs/operators';
+import { filter, first, map } from 'rxjs/operators';
+import { Selector, Store } from '@ngrx/store';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 
-import Event from 'src/app/shared/models/event';
 import { getUserInfo } from 'src/app/core';
+import Event from 'src/app/shared/models/event';
 import  * as fromCore from 'src/app/core/core.reducer';
 import * as fromEvents from 'src/app/core/events/events.reducer';
-import { GetWeekDates, GetWeekEvents } from 'src/app/core/events/events.actions';
+import { GetWeekDates, GetWeekEvents, GetWeekSharedEvents } from 'src/app/core/events/events.actions';
 
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -64,12 +64,15 @@ export class EventService {
   }
 
   create(event: any, activeUserMail: string | undefined): any {
-    event.dayOfWeek = days[event.eventDate.getDay()];
-    event.eventDate = (event.eventDate.getTime() / 1000);
+    event.eventTimeStart = (new Date(event.eventTimeStart).getTime() / 1000);
+    event.eventTimeEnd = (new Date(event.eventTimeEnd).getTime() / 1000);
+    event.dayOfWeek = days[new Date(event.eventTimeStart * 1000).getDay()];
+    event.dayOfWeek = days[new Date(event.eventTimeStart * 1000).getDay()];
+    event.user = this.userEmail;
     if (this.userEmail != null) {
-      this.itemsCollection = this.afs.collection<Event>(this.userEmail);
+      this.itemsCollection = this.afs.collection<Event>('events');
       this.itemsCollection.add(event);
-      return of(true)
+      return of(true);
     }
 
     return of(false);
@@ -79,9 +82,7 @@ export class EventService {
     return this.eventsRef.update(key, value);
   }
 
-
   getWeekEvents(date = new Date()) {
-
     this.store.select(getUserInfo as Selector<any, any>).pipe(first()).subscribe((res) => {
       this.userEmail = res && res.email;
     })
@@ -89,29 +90,58 @@ export class EventService {
     const start = this.getSunday(date);
     const end = this.getSaturday(date);
     if (this.userEmail != null) {
-      this.afs.collection(this.userEmail, ref => ref
-        .where('eventDate', '>=', start)
-        .where('eventDate', '<=', end)).snapshotChanges().pipe(
-         map(actions => actions.map(a => {
 
-           const data = a.payload.doc.data()
-           const id = a.payload.doc.id;
-           return { id, data };
-         })))
-         .subscribe(res => {
-           this.eventStore.dispatch(new GetWeekEvents(res));
-         })
+      this.afs.collection('events', ref => ref
+        .where('user', '==', this.userEmail)
+        .where('eventTimeStart', '>=', start)
+        .where('eventTimeStart', '<=', end)
+      ).snapshotChanges().pipe(
+        filter(data => !!data),
+        map(actions => actions.map(res => {
+          const data = res.payload.doc.data()
+          const id = res.payload.doc.id;
+          return { id, data };
+        })))
+        .subscribe(res => {
+          this.eventStore.dispatch(new GetWeekEvents(res));
+          this.getSharedEvents(date);
+        })
+    }
+  }
+
+  getSharedEvents(date = new Date()) {
+    this.store.select(getUserInfo as Selector<any, any>).pipe(first()).subscribe((res) => {
+      this.userEmail = res && res.email;
+    })
+
+    const start = this.getSunday(date);
+    const end = this.getSaturday(date);
+    if (this.userEmail != null) {
+      this.afs.collection('events', ref => ref
+        .where('eventGuests', 'array-contains', this.userEmail)
+        .where('eventTimeStart', '>=', start)
+        .where('eventTimeStart', '<=', end)
+      ).snapshotChanges().pipe(
+        map(actions => actions.map(res => {
+          const data = res.payload.doc.data()
+          const id = res.payload.doc.id;
+          return { id, data };
+        })))
+        .subscribe(res => {
+          this.eventStore.dispatch(new GetWeekSharedEvents(res));
+      })
     }
   }
 
   deleteEvent(id: string):void {
     if (this.userEmail != null) {
-      this.afs.collection(this.userEmail).doc(id).delete().then(r => of(true));
+      this.afs.collection('events').doc(id).delete().then(r => of(true));
+
     }
   }
 
-  updateEvent(id: string, newEvent: any):void {
-    newEvent.dayOfWeek = days[newEvent.eventDate.getDay()];
+  updateEvent(id: string, newEvent: any): void {
+    newEvent.dayOfWeek = days[newEvent.eventTimeStart.getDay()];
     newEvent.eventDate = (newEvent.eventDate.getTime() / 1000);
     if (this.userEmail != null) {
       this.afs.collection(this.userEmail).doc(id).update(newEvent).then(r => of(true));

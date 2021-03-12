@@ -19,7 +19,7 @@
           <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
           <div class="example-box__title">
             <span>{{ item['data']['eventName'] }}</span>
-            <div>{{ item['data']['eventTimeStart'] }} - {{ item['data']['eventTimeEnd'] }}</div>
+            <div>{{ item['data']['eventTimeStart'] * 1000 | date: 'HH:mm' }} - {{ item['data']['eventTimeEnd'] * 1000 | date:'HH:mm'}}</div>
           </div>
         </div>
       </div>

@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit {
       if (res) {
         this.events.getWeekEvents();
         this.events.getWeekDates();
+        // this.events.getSharedEvents();
       }
     })
   }

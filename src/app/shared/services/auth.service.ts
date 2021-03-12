@@ -5,10 +5,12 @@ import { Observable, of, Subject, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, first, shareReplay, switchMap, tap } from 'rxjs/operators';
 
-import { User } from 'src/app/shared/models/user';
 import * as fromCore from 'src/app/core';
-import { SetOnLoginAction } from 'src/app/core/core.actions';
+import * as fromEvents from 'src/app/core/events/events.reducer';
+import { User } from 'src/app/shared/models/user';
 import { environment } from 'src/environments/environment';
+import { SetOnLoginAction, SetOnLogOutAction } from 'src/app/core/core.actions';
+import { RemoveAllData } from '../../core/events/events.actions';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +20,8 @@ export class AuthService {
   constructor(
     public http: HttpClient,
     private router: Router,
-    private store: Store<fromCore.State>,
+    private coreStore: Store<fromCore.State>,
+    private eventStore: Store<fromEvents.State>
   ) {}
 
   get token(): any {
@@ -47,6 +50,8 @@ export class AuthService {
 
   logOut() {
     this.setToken(null);
+    this.coreStore.dispatch(new SetOnLogOutAction);
+    this.eventStore.dispatch(new RemoveAllData)
     this.router.navigate(['']);
   }
 
@@ -68,7 +73,7 @@ export class AuthService {
             password: '',
             returnSecureToken: true
           }
-          this.store.dispatch(new SetOnLoginAction(user));
+          this.coreStore.dispatch(new SetOnLoginAction(user));
         }),
         switchMap(_ => of(true)),
         catchError(res => {
@@ -96,7 +101,7 @@ export class AuthService {
   }
 
   public setData(user: User): void {
-    this.store.dispatch(new SetOnLoginAction(user));
+    this.coreStore.dispatch(new SetOnLoginAction(user));
   }
 
   private setToken(res: any) {

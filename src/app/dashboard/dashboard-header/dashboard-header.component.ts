@@ -27,7 +27,7 @@ export class DashboardHeaderComponent implements OnInit {
   }
 
   public showToday(): void {
-    this.events.getWeekEvents(new Date());
+    // this.events.getWeekEvents(new Date());
     this.events.getWeekDates(new Date());
     this.store.dispatch(new SetCurrentDate({ date:  new Date() }));
   }

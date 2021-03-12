@@ -58,6 +58,7 @@ export class DashboardCalendarComponent implements OnInit, OnDestroy {
 
   public showCurrentDate(date: Date): void {
     this.events.getWeekEvents(new Date(date.getTime()));
+    this.events.getSharedEvents(new Date(date.getTime()));
     this.events.getWeekDates(new Date(date.getTime()));
   }
 

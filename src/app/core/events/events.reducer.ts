@@ -37,43 +37,44 @@ export const INIT_STATE: State = {
 }
 
 export function reducer(state: State = INIT_STATE, action: eventsActions.Actions) {
+  let sundayEvents: { id: string, data: {} }[] = [];
+  let mondayEvents: { id: string, data: {} }[] = [];
+  let tuesdayEvents: { id: string, data: {} }[] = [];
+  let wednesdayEvents: { id: string, data: {} }[] = [];
+  let thursdayEvents: { id: string, data: {} }[] = [];
+  let fridayEvents: { id: string, data: {} }[] = [];
+  let saturdayEvents: { id: string, data: {} }[] = [];
+
   switch (action.type) {
     case eventsActions.ON_ADD_CURRENT_DATA:
       return { ...state, currentDate: action.payload.date }
     case eventsActions.GET_WEEK_EVENTS:
-      const sundayEvents: {}[] = [];
-      const mondayEvents: {}[] = [];
-      const tuesdayEvents: {}[] = [];
-      const wednesdayEvents: {}[] = [];
-      const thursdayEvents: {}[] = [];
-      const fridayEvents: {}[] = [];
-      const saturdayEvents: {}[] = [];
       action.payload.filter(({id, data}) => {
         const event = { id, data };
         switch (data['dayOfWeek']) {
-           case 'Sunday':
-             sundayEvents.push(event)
-             break
-           case 'Monday':
-             mondayEvents.push(event)
-             break
-           case 'Tuesday':
-             tuesdayEvents.push(event)
-             break
-           case 'Wednesday':
-             wednesdayEvents.push(event)
-             break
-           case 'Thursday':
-             thursdayEvents.push(event)
-             break
-           case 'Friday':
-             fridayEvents.push(event)
-             break
-           case 'Saturday':
-             saturdayEvents.push(event)
-             break
-           default:
-             return
+          case 'Sunday':
+            sundayEvents.push(event);
+            break
+          case 'Monday':
+            mondayEvents.push(event);
+            break
+          case 'Tuesday':
+            tuesdayEvents.push(event);
+            break
+          case 'Wednesday':
+            wednesdayEvents.push(event);
+            break
+          case 'Thursday':
+            thursdayEvents.push(event);
+            break
+          case 'Friday':
+            fridayEvents.push(event);
+            break
+          case 'Saturday':
+            saturdayEvents.push(event)
+            break
+          default:
+            return
          }
       });
 
@@ -87,8 +88,50 @@ export function reducer(state: State = INIT_STATE, action: eventsActions.Actions
         fridayEvents: fridayEvents,
         saturdayEvents: saturdayEvents
       }
+    case eventsActions.GET_WEEK_SHARED_EVENTS:
+      action.payload.filter(({id, data}) => {
+        const event = { id, data };
+        switch (data['dayOfWeek']) {
+          case 'Sunday':
+            state.sundayEvents.find(exisItem => exisItem['id'] === event['id']) ? null : sundayEvents.push(event);
+            break
+          case 'Monday':
+            state.mondayEvents.find(exisItem => exisItem['id'] === event['id']) ? null : mondayEvents.push(event);
+            break
+          case 'Tuesday':
+            state.thursdayEvents.find(exisItem => exisItem['id'] === event['id']) ? null : thursdayEvents.push(event);
+            break
+          case 'Wednesday':
+            state.wednesdayEvents.find(exisItem => exisItem['id'] === event['id']) ? null : wednesdayEvents.push(event);
+            break
+          case 'Thursday':
+            state.thursdayEvents.find(exisItem => exisItem['id'] === event['id']) ? null : thursdayEvents.push(event);
+            break
+          case 'Friday':
+            state.fridayEvents.find(exisItem => exisItem['id'] === event['id']) ? null : fridayEvents.push(event);
+            break
+          case 'Saturday':
+            state.saturdayEvents.find(exisItem => exisItem['id'] === event['id']) ? null : saturdayEvents.push(event);
+            break
+          default:
+            return
+        }
+      });
+
+      return {
+        ...state,
+        sundayEvents: [ ...state.sundayEvents, ...sundayEvents ],
+        mondayEvents: [ ...state.mondayEvents, ...mondayEvents ],
+        tuesdayEvents: [ ...state.tuesdayEvents, ...mondayEvents ],
+        wednesdayEvents: [ ...state.wednesdayEvents, ...wednesdayEvents ],
+        thursdayEvents: [ ...state.thursdayEvents, ...thursdayEvents ],
+        fridayEvents: [ ...state.fridayEvents, ...fridayEvents ],
+        saturdayEvents: [ ...state.saturdayEvents, ...saturdayEvents ],
+      }
     case eventsActions.GET_WEEK_DATES:
       return { ...state, weekDates: [ ...action.payload ] }
+    case eventsActions.REMOVE_ALL_DATA:
+      return { ...INIT_STATE }
     default:
       return state;
   }
