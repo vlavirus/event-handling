@@ -88,6 +88,7 @@ export class DashboardSchedulerComponent implements OnInit, OnDestroy {
         eventType: item.data.eventType,
         eventTimeStart: item.data.eventTimeStart,
         eventTimeEnd: item.data.eventTimeEnd,
+        status: item.data.status,
         id: item.id
       }
     });
@@ -99,8 +100,10 @@ export class DashboardSchedulerComponent implements OnInit, OnDestroy {
       const prevDayNumber = event.previousContainer.data['dayNumber'];
       const dayNumber = event.container.data['dayNumber'];
       const dayName = event.previousContainer.data['dayName'];
-      let newEventDate = draggedEvent.data.eventDate + (( dayNumber - prevDayNumber ) * DAY_S);
-      draggedEvent.data.eventDate = new Date(newEventDate * 1000);
+      let newEventTimeStart = draggedEvent.data.eventTimeStart + (( dayNumber - prevDayNumber ) * DAY_S);
+      let newEventTimeEnd= draggedEvent.data.eventTimeEnd + (( dayNumber - prevDayNumber ) * DAY_S);
+      draggedEvent.data.eventTimeStart = newEventTimeStart;
+      draggedEvent.data.eventTimeEnd = newEventTimeEnd;
 
       this.weekData[dayName] = this.weekData[dayName].filter((item: any, id: number) => id !== event.previousIndex);
       this.events.updateEvent(draggedEvent.id, draggedEvent.data);

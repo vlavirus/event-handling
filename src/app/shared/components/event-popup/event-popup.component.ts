@@ -37,8 +37,7 @@ export class EventPopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onNoClick(): void {
     this.popupRef.close();
@@ -56,7 +55,12 @@ export class EventPopupComponent implements OnInit {
     this.onNoClick();
   }
 
-  public editAccountToggle(): void {
+  editAccountToggle(): void {
     this.isEventEdit = !this.isEventEdit;
+  }
+
+  complete() {
+    this.events.done(this.data.id);
+    this.onNoClick();
   }
 }

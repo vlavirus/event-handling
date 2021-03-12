@@ -37,6 +37,13 @@
       <div class="content-panel__item-description">{{ data.eventDescr }}</div>
     </div>
   </div>
+  <ng-container *ngIf="data.status === 'active'">
+    <div class="content-panel__complete">
+      <button mat-raised-button color="primary" (click)="complete()">
+        <span class="material-icons content-panel__item-icon">check_circle</span>Complete</button>
+    </div>
+  </ng-container>
+
 </ng-container>
 
 <ng-container *ngIf="isEventEdit">

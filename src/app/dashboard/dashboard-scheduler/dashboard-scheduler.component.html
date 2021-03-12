@@ -18,8 +18,19 @@
         <div class="example-box" *ngFor="let item of weekData[day['dayName']]" cdkDrag (click)="openDialog(item)">
           <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
           <div class="example-box__title">
-            <span>{{ item['data']['eventName'] }}</span>
-            <div>{{ item['data']['eventTimeStart'] * 1000 | date: 'HH:mm' }} - {{ item['data']['eventTimeEnd'] * 1000 | date:'HH:mm'}}</div>
+            <ng-container *ngIf="item['data']['status'] === 'active'">
+              <span *ngIf="item['data']['status'] === 'active'">{{ item['data']['eventName'] }}</span>
+              <div>{{ item['data']['eventTimeStart'] * 1000 | date: 'HH:mm' }}
+                - {{ item['data']['eventTimeEnd'] * 1000 | date:'HH:mm'}}
+              </div>
+            </ng-container>
+            <ng-container *ngIf="item['data']['status'] === 'done'">
+              <span class="example-list__done">{{ item['data']['eventName'] }}</span>
+              <div class="example-list__done">
+                {{ item['data']['eventTimeStart'] * 1000 | date: 'HH:mm' }}
+                - {{ item['data']['eventTimeEnd'] * 1000 | date:'HH:mm'}}
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>

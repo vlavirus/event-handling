@@ -16,6 +16,9 @@
   border-radius: 4px;
   overflow: hidden;
   display: block;
+  &__done {
+    color: #999999;
+  }
 }
 
 .example-box {

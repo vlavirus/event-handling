@@ -68,6 +68,7 @@ export class EventService {
     event.eventTimeEnd = (new Date(event.eventTimeEnd).getTime() / 1000);
     event.dayOfWeek = days[new Date(event.eventTimeStart * 1000).getDay()];
     event.dayOfWeek = days[new Date(event.eventTimeStart * 1000).getDay()];
+    event.status = 'active';
     event.user = this.userEmail;
     if (this.userEmail != null) {
       this.itemsCollection = this.afs.collection<Event>('events');
@@ -136,15 +137,19 @@ export class EventService {
   deleteEvent(id: string):void {
     if (this.userEmail != null) {
       this.afs.collection('events').doc(id).delete().then(r => of(true));
-
     }
   }
 
   updateEvent(id: string, newEvent: any): void {
-    newEvent.dayOfWeek = days[newEvent.eventTimeStart.getDay()];
-    newEvent.eventDate = (newEvent.eventDate.getTime() / 1000);
+    newEvent.dayOfWeek = days[new Date(newEvent.eventTimeStart * 1000).getDay()];
     if (this.userEmail != null) {
-      this.afs.collection(this.userEmail).doc(id).update(newEvent).then(r => of(true));
+      this.afs.collection('events').doc(id).update(newEvent).then(r => of(true));
     }
+  }
+
+  done(id: string): void {
+    this.afs.collection('events').doc(id).update({
+      status: 'done'
+    })
   }
 }
