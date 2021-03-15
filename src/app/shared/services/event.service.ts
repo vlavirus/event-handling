@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Selector, Store } from '@ngrx/store';
 import { filter, first, map } from 'rxjs/operators';
@@ -6,8 +6,8 @@ import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 
 import { getUserInfo } from 'src/app/core';
-import { DAYS } from 'src/app/constants/date';
 import Event from 'src/app/shared/models/event';
+import { DAYS } from 'src/app/shared/constants/date';
 import  * as fromCore from 'src/app/core/core.reducer';
 import * as fromEvents from 'src/app/core/events/events.reducer';
 import { GetWeekDates, GetWeekEvents, GetWeekSharedEvents } from 'src/app/core/events/events.actions';
@@ -39,7 +39,7 @@ export class EventService {
     return startOfDay / 1000;
   }
 
-  private getSaturday(date: Date) {
+  private getSaturday(date: Date): number {
     date = new Date(date);
     const day = date.getDay(), diff = date.getDate() - day + (day == 0 ? 0 : 6); // adjust when day is sunday
     const startOfDay = new Date(date.setDate(diff)).setHours(23, 59, 59, 0)
@@ -66,7 +66,7 @@ export class EventService {
     return new Date(monthEnd).getTime() / 1000;
   }
 
-  getWeekDates(curr = new Date()) {
+  getWeekDates(curr = new Date()): void {
     let week = [];
 
     for (let i = 0; i <= 6; i++) {
@@ -84,7 +84,7 @@ export class EventService {
     return this.eventsRef;
   }
 
-  create(event: any, activeUserMail: string | undefined): any {
+  create(event: any): Observable<boolean> {
     event.eventTimeStart = (new Date(event.eventTimeStart).getTime() / 1000);
     event.eventTimeEnd = (new Date(event.eventTimeEnd).getTime() / 1000);
     event.dayOfWeek = DAYS[new Date(event.eventTimeStart * 1000).getDay()];
@@ -104,7 +104,7 @@ export class EventService {
     return this.eventsRef.update(key, value);
   }
 
-  getWeekEvents(date = new Date()) {
+  getWeekEvents(date = new Date()): void {
     this.store.select(getUserInfo as Selector<any, any>).pipe(first()).subscribe((res) => {
       this.userEmail = res && res.email;
     })
@@ -131,7 +131,7 @@ export class EventService {
     }
   }
 
-  getSharedEvents(date = new Date()) {
+  getSharedEvents(date = new Date()): void {
     this.store.select(getUserInfo as Selector<any, any>).pipe(first()).subscribe((res) => {
       this.userEmail = res && res.email;
     })
@@ -155,7 +155,7 @@ export class EventService {
     }
   }
 
-  deleteEvent(id: string):void {
+  deleteEvent(id: string): void {
     if (this.userEmail != null) {
       this.afs.collection('events').doc(id).delete().then(r => of(true));
     }
@@ -174,7 +174,7 @@ export class EventService {
     })
   }
 
-  getActiveEvents(month: number, dayCounter: number): any {
+  getActiveEvents(month: number, dayCounter: number): Observable<number> {
     const start = this.getMonthBeginTime(month);
     const end = this.getMonthEndTime(month, dayCounter);
     return this.afs.collection('events', ref => ref
@@ -185,7 +185,7 @@ export class EventService {
     ).get().pipe(map(res => res.size))
   };
 
-  getDoneEvents(month: number, dayCounter: number): any {
+  getDoneEvents(month: number, dayCounter: number): Observable<number> {
     const start = this.getMonthBeginTime(month);
     const end = this.getMonthEndTime(month, dayCounter);
     return this.afs.collection('events', ref => ref

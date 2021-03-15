@@ -21,10 +21,9 @@ export class DashboardHeaderComponent implements OnInit {
     private store: Store<fromEvents.State>
   ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  logOut() {
+  logOut(): void {
     this.auth.logOut();
   }
 

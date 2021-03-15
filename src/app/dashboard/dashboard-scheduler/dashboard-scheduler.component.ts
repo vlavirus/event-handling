@@ -94,7 +94,7 @@ export class DashboardSchedulerComponent implements OnInit, OnDestroy {
     });
   }
 
-  drop(event: CdkDragDrop<any>) {
+  drop(event: CdkDragDrop<any>): void {
     if (event.previousContainer !== event.container) {
       const draggedEvent = JSON.parse(JSON.stringify(event.previousContainer.data['data'][event.previousIndex]));
       const prevDayNumber = event.previousContainer.data['dayNumber'];

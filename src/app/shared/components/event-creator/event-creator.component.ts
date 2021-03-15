@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { getUserInfo, State } from 'src/app/core';
-import { EMAIL_REGEXP } from 'src/app/constants/regexp';
+import { EMAIL_REGEXP } from 'src/app/shared/constants/regexp';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { EventService } from 'src/app/shared/services/event.service';
 
@@ -58,18 +58,18 @@ export class EventCreatorComponent implements OnInit {
     })
   }
 
-  submit() {
+  submit(): void {
     if (this.form.invalid) {
       return;
     }
 
-    this.event.create(this.form.value, this.activeUserMail).pipe(first()).subscribe(() => {
+    this.event.create(this.form.value).pipe(first()).subscribe(() => {
       this.form.reset();
       this.shownToggle.emit();
     });
   }
 
-  EnterSubmit(event: KeyboardEvent, form: FormGroup) {
+  EnterSubmit(event: KeyboardEvent, form: FormGroup): void {
     if (event.keyCode === 13) {
       const addEmails = form.get('guest')?.value.match(EMAIL_REGEXP);
       const currentEmails = this.form.get('eventGuests')?.value;

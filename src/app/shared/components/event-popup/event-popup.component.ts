@@ -12,7 +12,7 @@ import { EventService } from 'src/app/shared/services/event.service';
 export class EventPopupComponent implements OnInit {
 
   eventName: string = '';
-  eventDate: any = '';
+  eventDate: string = '';
   userName: string = '';
 
   timeStart = new Date(this.data.eventTimeStart * 1000);
@@ -43,13 +43,13 @@ export class EventPopupComponent implements OnInit {
     this.popupRef.close();
   }
 
-  deleteEvent() {
+  deleteEvent(): void {
     this.events.deleteEvent(this.data.id);
     this.editAccountToggle();
     this.onNoClick();
   }
 
-  updateEvent() {
+  updateEvent(): void {
     this.events.updateEvent(this.data.id, this.form.value);
     this.editAccountToggle();
     this.onNoClick();
@@ -59,7 +59,7 @@ export class EventPopupComponent implements OnInit {
     this.isEventEdit = !this.isEventEdit;
   }
 
-  complete() {
+  complete(): void {
     this.events.done(this.data.id);
     this.onNoClick();
   }

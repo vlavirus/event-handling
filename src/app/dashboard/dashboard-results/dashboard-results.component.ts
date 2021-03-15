@@ -3,7 +3,7 @@ import { Color, Label } from 'ng2-charts';
 import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 
-import { MONTH_DAY_COUNT } from 'src/app/constants/date';
+import { MONTH_DAY_COUNT } from 'src/app/shared/constants/date';
 import { EventService } from 'src/app/shared/services/event.service';
 
 @Component({
@@ -48,8 +48,7 @@ export class DashboardResultsComponent implements OnInit {
   lineChartType: ChartType = 'line';
   lineChartPlugins = [];
 
-  constructor(public event: EventService) {
-  }
+  constructor(public event: EventService) {}
 
   ngOnInit(): void {
     MONTH_DAY_COUNT.forEach((days, index) => {

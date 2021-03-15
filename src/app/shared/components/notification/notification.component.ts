@@ -32,7 +32,7 @@ export class NotificationComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  subscribeToNotifications() {
+  subscribeToNotifications(): void {
     this.swPush.requestSubscription({
       serverPublicKey: this.VAPID_PUBLIC_KEY
     })
@@ -41,7 +41,7 @@ export class NotificationComponent implements OnInit {
       .catch(err => console.error("Could not subscribe to notifications", err));
   }
 
-  pushSubscription() {
+  pushSubscription(): void {
     if (!this.swPush.isEnabled) {
       console.log("Notification is not enable");
     }

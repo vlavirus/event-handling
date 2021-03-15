@@ -46,11 +46,11 @@ export class DashboardCalendarComponent implements OnInit, OnDestroy {
     this.dates = this.getCalendarDays(this.date);
   }
 
-  isSameMonth(date: Date) {
+  isSameMonth(date: Date): boolean {
     return date.getMonth() === this.date!.getMonth();
   }
 
-  isSameDay(date: Date) {
+  isSameDay(date: Date): boolean {
     return date.getDate() === this.currentDate.getDate() &&
       date.getMonth() === this.currentDate.getMonth() &&
       date.getFullYear() === this.currentDate.getFullYear();
@@ -62,7 +62,7 @@ export class DashboardCalendarComponent implements OnInit, OnDestroy {
     this.events.getWeekDates(new Date(date.getTime()));
   }
 
-  private getCalendarDays(date = new Date()) {
+  private getCalendarDays(date = new Date()): Date[] {
     const calendarStartTime = this.getCalendarStartDay(date)!.getTime();
 
     return this.range(0, 41).map(
@@ -70,7 +70,7 @@ export class DashboardCalendarComponent implements OnInit, OnDestroy {
     );
   }
 
-  private getCalendarStartDay(date = new Date()) {
+  private getCalendarStartDay(date = new Date()): Date | undefined {
     const [year, month] = [date.getFullYear(), date.getMonth()];
     const firstDayOfMonth = new Date(year, month, 1).getTime();
 
@@ -82,7 +82,7 @@ export class DashboardCalendarComponent implements OnInit, OnDestroy {
       });
   }
 
-  private range(start: any, end: any, length = end - start + 1) {
+  private range(start: any, end: any, length = end - start + 1): number[] {
     return Array.from({ length }, (_, i) => start + i);
   }
 }
