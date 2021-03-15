@@ -40,13 +40,10 @@ export class AuthService {
       .pipe(
         tap((res) => {
           this.setToken(res);
-          // this.setData(user);
         }),
         catchError(this.handleError.bind(this))
       )
   }
-
-
 
   logOut() {
     this.setToken(null);

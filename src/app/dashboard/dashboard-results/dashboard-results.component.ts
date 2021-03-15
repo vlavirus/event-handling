@@ -3,7 +3,7 @@ import { Color, Label } from 'ng2-charts';
 import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 
-import { MONTH_DAY_COUNT } from 'src/app/constants/month';
+import { MONTH_DAY_COUNT } from 'src/app/constants/date';
 import { EventService } from 'src/app/shared/services/event.service';
 
 @Component({
@@ -16,16 +16,16 @@ export class DashboardResultsComponent implements OnInit {
   doneEventsCount: number[] = [];
   activeEventsCount: number[] = [];
 
-  public lineChartData: ChartDataSets[] = [
+  lineChartData: ChartDataSets[] = [
     { data: this.activeEventsCount, label: 'Active Events' },
     { data: this.doneEventsCount, label: "Done Events" }
   ];
 
-  public lineChartLabels: Label[] = ["January", "February", "March", "April", "May", "June",
+  lineChartLabels: Label[] = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
 
-  public lineChartOptions: (ChartOptions & { annotation: any }) = {
+  lineChartOptions: (ChartOptions & { annotation: any }) = {
     annotation: undefined,
     responsive: true,
     scales: {
@@ -37,16 +37,16 @@ export class DashboardResultsComponent implements OnInit {
     }
   };
 
-  public lineChartColors: Color[] = [
+  lineChartColors: Color[] = [
     {
       borderColor: 'none',
       backgroundColor: 'rgba(255, 0, 0, 0.3)',
     },
   ];
 
-  public lineChartLegend = true;
-  public lineChartType: ChartType = 'line';
-  public lineChartPlugins = [];
+  lineChartLegend = true;
+  lineChartType: ChartType = 'line';
+  lineChartPlugins = [];
 
   constructor(public event: EventService) {
   }

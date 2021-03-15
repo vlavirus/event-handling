@@ -5,15 +5,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ReactiveComponentModule } from '@ngrx/component';
 import { MatButtonModule } from '@angular/material/button';
+import { ChartsModule } from 'ng2-charts';
 
 import { SharedModule } from '../shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
 import { AuthService } from '../shared/services/auth.service';
 import { DashboardHeaderComponent } from './dashboard-header/dashboard-header.component';
+import { DashboardResultsComponent } from './dashboard-results/dashboard-results.component';
 import { DashboardCalendarComponent } from './dashboard-calendar/dashboard-calendar.component';
 import { DashboardSchedulerComponent } from './dashboard-scheduler/dashboard-scheduler.component';
-import { DashboardResultsComponent } from './dashboard-results/dashboard-results.component';
-import { ChartsModule } from 'ng2-charts';
+
 const routes: Routes = [
   { path: '', component: DashboardComponent }
 ];

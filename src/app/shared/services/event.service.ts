@@ -1,18 +1,17 @@
 import { of } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { filter, first, map } from 'rxjs/operators';
 import { Selector, Store } from '@ngrx/store';
+import { filter, first, map } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 
 import { getUserInfo } from 'src/app/core';
+import { DAYS } from 'src/app/constants/date';
 import Event from 'src/app/shared/models/event';
 import  * as fromCore from 'src/app/core/core.reducer';
 import * as fromEvents from 'src/app/core/events/events.reducer';
 import { GetWeekDates, GetWeekEvents, GetWeekSharedEvents } from 'src/app/core/events/events.actions';
-import { MONTH_DAY_COUNT } from '../../constants/month';
 
-const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +72,7 @@ export class EventService {
     for (let i = 0; i <= 6; i++) {
       let first = curr.getDate() - curr.getDay() + i
       let day = new Date(curr.setDate(first))
-      week.push({ date: day.getDate(), month: day.getMonth(), year: day.getFullYear(), dayName: days[day.getDay()].toLowerCase()})
+      week.push({ date: day.getDate(), month: day.getMonth(), year: day.getFullYear(), dayName: DAYS[day.getDay()].toLowerCase()})
     }
     this.eventStore.dispatch(new GetWeekDates(week));
     this.store.select(getUserInfo as Selector<any, any>).pipe(first()).subscribe(res => {
@@ -88,8 +87,8 @@ export class EventService {
   create(event: any, activeUserMail: string | undefined): any {
     event.eventTimeStart = (new Date(event.eventTimeStart).getTime() / 1000);
     event.eventTimeEnd = (new Date(event.eventTimeEnd).getTime() / 1000);
-    event.dayOfWeek = days[new Date(event.eventTimeStart * 1000).getDay()];
-    event.dayOfWeek = days[new Date(event.eventTimeStart * 1000).getDay()];
+    event.dayOfWeek = DAYS[new Date(event.eventTimeStart * 1000).getDay()];
+    event.dayOfWeek = DAYS[new Date(event.eventTimeStart * 1000).getDay()];
     event.status = 'active';
     event.user = this.userEmail;
     if (this.userEmail != null) {
@@ -163,7 +162,7 @@ export class EventService {
   }
 
   updateEvent(id: string, newEvent: any): void {
-    newEvent.dayOfWeek = days[new Date(newEvent.eventTimeStart * 1000).getDay()];
+    newEvent.dayOfWeek = DAYS[new Date(newEvent.eventTimeStart * 1000).getDay()];
     if (this.userEmail != null) {
       this.afs.collection('events').doc(id).update(newEvent).then(r => of(true));
     }
@@ -196,6 +195,5 @@ export class EventService {
       .where('eventTimeStart', '<=', end)
     ).get().pipe(map(res => res.size))
   };
-
 
 }
