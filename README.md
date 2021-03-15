@@ -1,6 +1,8 @@
 # EventHandling
 
 Link to deploy project https://event-handling.vercel.app/
+Login: test@test.com
+Pass: test123
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.4.
 
