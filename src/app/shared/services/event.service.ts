@@ -10,6 +10,7 @@ import Event from 'src/app/shared/models/event';
 import  * as fromCore from 'src/app/core/core.reducer';
 import * as fromEvents from 'src/app/core/events/events.reducer';
 import { GetWeekDates, GetWeekEvents, GetWeekSharedEvents } from 'src/app/core/events/events.actions';
+import { MONTH_DAY_COUNT } from '../../constants/month';
 
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -38,11 +39,32 @@ export class EventService {
     const startOfDay = new Date(date.setDate(diff)).setHours(0, 0, 0, 0)
     return startOfDay / 1000;
   }
+
   private getSaturday(date: Date) {
     date = new Date(date);
     const day = date.getDay(), diff = date.getDate() - day + (day == 0 ? 0 : 6); // adjust when day is sunday
     const startOfDay = new Date(date.setDate(diff)).setHours(23, 59, 59, 0)
     return startOfDay / 1000;
+  }
+
+  private getMonthBeginTime(month: number): number {
+    const monthBegin = new Date();
+    monthBegin.setHours(0);
+    monthBegin.setMonth(month);
+    monthBegin.setMinutes(0);
+    monthBegin.setDate(1);
+
+    return new Date(monthBegin).getTime() / 1000;
+  }
+
+  private getMonthEndTime(month: number, dayCounter: number): number {
+    const monthEnd = new Date();
+    monthEnd.setHours(23);
+    monthEnd.setMonth(month);
+    monthEnd.setMinutes(59);
+    monthEnd.setDate(dayCounter);
+
+    return new Date(monthEnd).getTime() / 1000;
   }
 
   getWeekDates(curr = new Date()) {
@@ -152,4 +174,28 @@ export class EventService {
       status: 'done'
     })
   }
+
+  getActiveEvents(month: number, dayCounter: number): any {
+    const start = this.getMonthBeginTime(month);
+    const end = this.getMonthEndTime(month, dayCounter);
+    return this.afs.collection('events', ref => ref
+      .where('user', '==', this.userEmail)
+      .where('status', '==', 'active')
+      .where('eventTimeStart', '>=', start)
+      .where('eventTimeStart', '<=', end)
+    ).get().pipe(map(res => res.size))
+  };
+
+  getDoneEvents(month: number, dayCounter: number): any {
+    const start = this.getMonthBeginTime(month);
+    const end = this.getMonthEndTime(month, dayCounter);
+    return this.afs.collection('events', ref => ref
+      .where('user', '==', this.userEmail)
+      .where('status', '==', 'done')
+      .where('eventTimeStart', '>=', start)
+      .where('eventTimeStart', '<=', end)
+    ).get().pipe(map(res => res.size))
+  };
+
+
 }

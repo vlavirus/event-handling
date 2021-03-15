@@ -40,7 +40,7 @@ export class DashboardCalendarComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe$.complete();
   }
 
-  setMonth(inc: number) {
+  setMonth(inc: number): void {
     const [year, month] = [this.date!.getFullYear(), this.date!.getMonth()];
     this.date = new Date(year, month + inc, 1);
     this.dates = this.getCalendarDays(this.date);

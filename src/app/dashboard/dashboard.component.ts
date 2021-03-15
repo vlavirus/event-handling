@@ -13,7 +13,8 @@ import { EventService } from '../shared/services/event.service';
 })
 export class DashboardComponent implements OnInit {
 
-  isShown: boolean = false;
+  isShownCreator: boolean = false;
+  isShownResults: boolean = false;
 
   constructor(
     public auth: AuthService,
@@ -32,7 +33,11 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  toggleShow() {
-    this.isShown = ! this.isShown;
+  toggleShowCreator(): void {
+    this.isShownCreator = !this.isShownCreator;
+  }
+
+  toggleShowResults(): void {
+    this.isShownResults = !this.isShownResults;
   }
 }

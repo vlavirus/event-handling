@@ -1,0 +1,13 @@
+:host {
+  background-color: white;
+  z-index: 3;
+  .result {
+    &-container {
+      background-color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+}

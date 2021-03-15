@@ -1,17 +1,21 @@
-<app-dashboard-header></app-dashboard-header>
+<app-dashboard-header (shownToggleResult)="toggleShowResults()"></app-dashboard-header>
 <div class="calendar-wrapper">
   <div>
     <div class="example-button-container">
-      <button mat-raised-button class="create" (click)="toggleShow()">
+      <button mat-raised-button class="create" (click)="toggleShowCreator()">
         <mat-icon>plus_one</mat-icon>
         Create Event
       </button>
     </div>
     <app-dashboard-calendar></app-dashboard-calendar>
   </div>
-  <div *ngIf="isShown">
-    <app-event-creator (shownToggle)="toggleShow()"></app-event-creator>
+  <div *ngIf="isShownCreator">
+    <app-event-creator (shownToggle)="toggleShowCreator()"></app-event-creator>
   </div>
   <app-dashboard-scheduler></app-dashboard-scheduler>
 </div>
+
+<ng-container *ngIf="isShownResults">
+  <app-dashboard-results></app-dashboard-results>
+</ng-container>
 

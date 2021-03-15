@@ -12,7 +12,8 @@ import { AuthService } from '../shared/services/auth.service';
 import { DashboardHeaderComponent } from './dashboard-header/dashboard-header.component';
 import { DashboardCalendarComponent } from './dashboard-calendar/dashboard-calendar.component';
 import { DashboardSchedulerComponent } from './dashboard-scheduler/dashboard-scheduler.component';
-
+import { DashboardResultsComponent } from './dashboard-results/dashboard-results.component';
+import { ChartsModule } from 'ng2-charts';
 const routes: Routes = [
   { path: '', component: DashboardComponent }
 ];
@@ -22,9 +23,11 @@ const routes: Routes = [
     DashboardComponent,
     DashboardHeaderComponent,
     DashboardCalendarComponent,
-    DashboardSchedulerComponent
+    DashboardSchedulerComponent,
+    DashboardResultsComponent
   ],
   imports: [
+    ChartsModule,
     CommonModule,
     MatButtonModule,
     RouterModule.forChild(routes),
